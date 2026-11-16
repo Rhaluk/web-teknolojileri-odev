@@ -1,0 +1,31 @@
+#rezervations{
+    border: 1px solid var(--metin);
+    padding: 2rem;
+}
+
+#rezervations h3{
+    color: var(--metin);
+    text-align: center;
+    font-size: 1rem;
+}
+
+#rezervations ul{
+    list-style: none;
+    padding: 0.2rem;
+    margin-left: 1.5rem ;
+    font-size: 0.8rem;
+}
+
+#rezervations button{
+    background-color: var(--odak);
+    width: 100%;
+    margin-top: 0.5rem ;
+
+}
+
+#rezervations button span a{
+    text-decoration: none;
+    color: var(--yuzey);
+    font-size: 1rem;
+}
+
