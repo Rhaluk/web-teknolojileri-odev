@@ -6,32 +6,40 @@
    Mobil önce yazılmıştır: 400 px genişlikte rahat kullanılmalıdır.
    ===================================================================== */
 
-:root {
-  /* Renkler */
-  --zemin:       #EEF2F0;   /* porselen, sayfa zemini       */
-  --yuzey:       #FFFFFF;   /* içerik alanları              */
-  --metin:       #1F2A2E;   /* ana metin                    */
-  --metin-soluk: #5A686D;   /* ikincil metin, açıklamalar   */
-  --cizgi:       #C9D3D0;   /* kenarlıklar                  */
-  --ana:         #1B6B5A;   /* karo yeşili: ana eylem       */
-  --ana-koyu:    #12503F;
-  --vurgu:       #F2B134;   /* safran: fiyat, boş yer       */
-  --hata:        #B3261E;
-  --hata-zemin:  #FCE8E6;
-  --basari:      #2E6B30;
-  --basari-zemin:#E6F2E6;
 
-  /* Yazı */
-  --yazi: "Segoe UI", system-ui, -apple-system, Roboto, "Noto Sans", sans-serif;
-  --boyut-kucuk: 0.875rem;
-  --boyut:       1rem;
-  --boyut-buyuk: 1.25rem;
-  --boyut-baslik: 1.75rem;
+  :root {
+    /* Zemin katmanları: koyudan açığa doğru */
+    --zemin:          #0F1416;  /* sayfa arka planı                  */
+    --yuzey:          #182024;  /* kartlar, formlar, tablolar        */
+    --yuzey-ust:      #212B30;  /* input içi, satır hover, üst menü  */
+    --cizgi:          #2E3A40;  /* kenarlıklar, ayırıcılar           */
 
-  /* Boşluk ve köşe */
-  --bosluk: 1rem;
-  --kose: 6px;
-}
+    /* Metin */
+    --metin:          #E6ECEA;  /* ana metin                         */
+    --metin-soluk:    #9AA8AD;  /* açıklama, tarih, ikincil bilgi    */
+
+    /* Ana renk: yeşil (düğmeler, linkler, seçili sekme) */
+    --ana:            #3FB68B;
+    --ana-hover:      #5CCBA2;
+    --ana-ustu-metin: #0B1F18;  /* yeşil düğmenin üstündeki ya     */
+
+    /* Vurgu: safran (fiyat, boş yer sayısı, bakiye) */
+    --vurgu:          #F2B134;
+
+    /* Durumlar: her birinin yazı rengi ve koyu zemini var */
+    --basari:         #7FD08A;  --basari-zemin: #1A3220;  /* işlem başarılı, vejetaryen, aktif      */
+    --hata:           #F2867D;  --hata-zemin:   #3A1E1D;  /* procedure hataları, iptal              */
+    --uyari:          #F2C063;  --uyari-zemin:  #3A2F14;  /* alerjen uyarısı (Aşama 4), az yer kaldı */
+    --bilgi:          #7FB3F2;  --bilgi-zemin:  #1A2738;  /* kullanıldı ≤durumu, bilgi notları       */
+
+    /* Pasif düğme (son saat geçti) */
+    --pasif-zemin:    #2A3236;
+    --pasif-metin:    #6B777C;
+
+    /* Odak halkası (klavye ile gezinme) */
+    --odak:           #F2B134;
+  }
+
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -39,84 +47,73 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
-  font-family: var(--yazi);
-  font-size: var(--boyut);
   line-height: 1.5;
   color: var(--metin);
   background: var(--zemin);
+  height: 100%;
 }
 
 img, svg { max-width: 100%; height: auto; display: block; }
 
-h1, h2, h3 { line-height: 1.2; margin: 0 0 0.5em; }
-h1 { font-size: var(--boyut-baslik); }
-h2 { font-size: var(--boyut-buyuk); }
-p  { margin: 0 0 1em; max-width: 70ch; }
-
-a { color: var(--ana); }
-a:hover { color: var(--ana-koyu); }
-
-/* Sayfa genişliği: telefonda kenarlara 1rem pay, geniş ekranda ortalı */
-.kapsayici {
-  width: 100%;
-  max-width: 960px;
-  margin-inline: auto;
-  padding-inline: var(--bosluk);
-}
-
-/* ---------- Form öğeleri ---------- */
-label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
-
-input, select, textarea, button { font: inherit; }
-
-input, select, textarea {
-  width: 100%;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid var(--cizgi);
-  border-radius: var(--kose);
+header{
   background: var(--yuzey);
-  color: var(--metin);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
 
-/* Dokunmatik ekranda rahat basılabilir boyut: en az 44 px */
-.dugme {
-  display: inline-block;
-  min-height: 44px;
-  padding: 0.6rem 1.1rem;
-  border: 0;
-  border-radius: var(--kose);
-  background: var(--ana);
-  color: #fff;
-  font-weight: 600;
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+nav ul li a {
   text-decoration: none;
+  color: var(--metin);
   cursor: pointer;
 }
-.dugme:hover { background: var(--ana-koyu); color: #fff; }
 
-/* Örn. rezervasyon son saati geçtiğinde */
-.dugme:disabled,
-.dugme[aria-disabled="true"] {
-  background: var(--cizgi);
-  color: var(--metin-soluk);
-  cursor: not-allowed;
+nav ul a:hover{
+  cursor: pointer;
+  color: var(--vurgu);
 }
 
-:focus-visible { outline: 3px solid var(--vurgu); outline-offset: 2px; }
-
-/* ---------- Bildirim kutusu ----------
-   Stored procedure'lerden dönen Türkçe hata mesajları buraya yazılabilir:
-   <p class="bildirim bildirim-hata" role="alert">Bakiye yetersiz.</p>       */
-.bildirim {
-  padding: 0.75rem 1rem;
-  border-radius: var(--kose);
-  border-left: 4px solid currentColor;
+/* giriş yapma  divi */
+#login-div form{
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  justify-content: center;
+  align-items: center;
 }
-.bildirim-hata   { color: var(--hata);   background: var(--hata-zemin); }
-.bildirim-basari { color: var(--basari); background: var(--basari-zemin); }
 
-/* Geniş tabloların sayfayı yana kaydırmaması için sarmalayıcı */
-.tablo-kaydir { overflow-x: auto; }
-
-@media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; }
+#login-div form input {
+  width: 25rem;
+  background-color: var(--yuzey);
+  border: none;
+  border-radius: 0.5rem;
+  height: 2rem;
+  padding: 0.5rem;
 }
+
+#login-div form button {
+  width: 25rem;
+  background-color: var(--vurgu);
+  color: var(--zemin);
+  border: none;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+#login-div{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  padding: 1.5rem;
+}
+
