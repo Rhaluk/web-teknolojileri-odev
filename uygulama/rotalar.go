@@ -31,6 +31,9 @@ func rotalar(k *kontrolcu.Kontrolcu, od *oturum.Depo) http.Handler {
 	kul := api.NewRoute().Subrouter()
 	kul.Use(ara.OturumGerekli(od))
 	kul.HandleFunc("/ben", k.Ben).Methods(http.MethodGet)
+	kul.HandleFunc("/yemekhaneler", k.Yemekhaneler).Methods(http.MethodGet)
+	kul.HandleFunc("/menu", k.GununMenusu).Methods(http.MethodGet)
+	kul.HandleFunc("/menuler/haftalik", k.HaftalikMenu).Methods(http.MethodGet)
 
 	// --- Yalnızca yönetici
 	yon := api.PathPrefix("/yonetici").Subrouter()
