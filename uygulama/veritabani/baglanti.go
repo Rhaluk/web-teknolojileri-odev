@@ -43,7 +43,9 @@ func mysqlAc(host string) (*gorm.DB, error) {
 	var db *gorm.DB
 	var err error
 	for deneme := 1; deneme <= 10; deneme++ {
-		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: logger.Default.LogMode(logger.Warn)})
+		// GORM kendi günlüğünü yazmaz: "Bakiye yetersiz." gibi beklenen procedure
+		// hataları hata gibi görünmesin. Beklenmeyen hataları kontrolcu.DepoHatasi yazar.
+		db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: logger.Default.LogMode(logger.Silent)})
 		if err == nil {
 			sqlDB, _ := db.DB()
 			if err = sqlDB.Ping(); err == nil {

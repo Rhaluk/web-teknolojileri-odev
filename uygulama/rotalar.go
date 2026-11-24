@@ -45,6 +45,11 @@ func rotalar(k *kontrolcu.Kontrolcu, od *oturum.Depo) http.Handler {
 	// --- Yalnızca yönetici
 	yon := api.PathPrefix("/yonetici").Subrouter()
 	yon.Use(ara.OturumGerekli(od), ara.YoneticiGerekli)
+	yon.HandleFunc("/yemekler", k.Yemekler).Methods(http.MethodGet)
+	yon.HandleFunc("/menuler", k.MenuRaporu).Methods(http.MethodGet)
+	yon.HandleFunc("/menuler", k.MenuOlustur).Methods(http.MethodPost)
+	yon.HandleFunc("/menuler/{id:[0-9]+}", k.MenuGetir).Methods(http.MethodGet)
+	yon.HandleFunc("/menuler/{id:[0-9]+}", k.MenuGuncelle).Methods(http.MethodPut)
 
 	api.NotFoundHandler = http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		kontrolcu.Hata(w, http.StatusNotFound, "Böyle bir adres yok.")
