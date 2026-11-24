@@ -1,0 +1,10 @@
+/* Profil sayfası (Aşama 4: alerjen seçimi) */
+
+#profil section {
+    padding: 1.25rem;
+    border: 1px solid var(--cizgi);
+    border-radius: var(--kose);
+    background: var(--yuzey);
+}
+#profil h2 { font-size: 1.1rem; margin-top: 0; }
+#profil fieldset { margin: 0 0 1rem; padding: 0; border: 0; min-width: 0; }

@@ -17,6 +17,7 @@
             <li><a href="credit.html">bakiye</a></li>
             <li><a href="rate.html">puan verin</a></li>
             <li><a href="adminPanel.html">yönetici</a></li>
+            <li><a href="profil.html">profil</a></li>
             <li><a href="login.html" id="cikis">çıkış</a></li>
         </ul>
     </nav>
@@ -55,11 +56,14 @@
     <p id="menu-hata" class="bildirim bildirim-hata" role="alert" hidden></p>
 
     <!-- Yemekler kategori sırasıyla gelir (v_menu_detay: ORDER BY kategori_sira, yemek) -->
+    <!-- Aşama 4: menüde profildeki alerjenlerden biri varsa -->
+    <p id="alerjen-uyari" class="bildirim bildirim-uyari" role="status" hidden></p>
+
     <section id="gunun-menusu" hidden>
         <ul id="yemek-listesi"></ul>
 
         <div id="menu-ozet">
-            <p>Toplam <strong id="toplam-kalori"></strong> · <span id="fiyat" class="fiyat"></span> · <span id="bos-yer"></span> boş yer</p>
+            <p>Toplam <strong id="toplam-kalori"></strong> · <span id="fiyat" class="fiyat"></span><span id="yarim-fiyat" class="soluk"></span> · <span id="bos-yer"></span> boş yer</p>
             <a class="dugme" href="menu.html">rezervasyon yap</a>
         </div>
     </section>

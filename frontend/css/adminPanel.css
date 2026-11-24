@@ -33,21 +33,6 @@
 .kategori-grubu { margin: 0 0 1rem; padding: 0; border: 0; min-width: 0; }
 .kategori-grubu legend { padding: 0; margin-bottom: 0.4rem; color: var(--metin-soluk); font-size: 0.8rem; text-transform: uppercase; }
 
-.secim-kutulari { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-.secim-kutulari label {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    margin: 0;
-    padding: 0.35rem 0.7rem;
-    border: 1px solid var(--cizgi);
-    border-radius: 999px;
-    font-weight: 400;
-    font-size: 0.875rem;
-    cursor: pointer;
-}
-.secim-kutulari input { accent-color: var(--ana); }
-.secim-kutulari label:has(input:checked) { border-color: var(--ana); background: var(--basari-zemin); }
 
 .form-dugmeler { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
 

@@ -235,6 +235,7 @@ label { display: block; margin-bottom: 0.25rem; font-weight: 600; }
 }
 .bildirim-hata   { color: var(--hata);   background: var(--hata-zemin); }
 .bildirim-basari { color: var(--basari); background: var(--basari-zemin); }
+.bildirim-uyari  { color: var(--uyari);  background: var(--uyari-zemin); }
 
 /* ---------- Rozet: küçük durum etiketi ---------- */
 .rozet {
@@ -250,6 +251,24 @@ label { display: block; margin-bottom: 0.25rem; font-weight: 600; }
 .rozet-aktif, .rozet-vejetaryen { color: var(--basari); background: var(--basari-zemin); }
 .rozet-kullanildi               { color: var(--bilgi);  background: var(--bilgi-zemin); }
 .rozet-iptal                    { color: var(--hata);   background: var(--hata-zemin); }
+.rozet-uyari                     { color: var(--uyari);  background: var(--uyari-zemin); }
+
+/* Onay kutuları çip görünümünde (yönetici yemek seçimi, profil alerjen seçimi) */
+.secim-kutulari { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.secim-kutulari label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--cizgi);
+    border-radius: 999px;
+    font-weight: 400;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+.secim-kutulari input { accent-color: var(--ana); }
+.secim-kutulari label:has(input:checked) { border-color: var(--ana); background: var(--basari-zemin); }
 
 .fiyat { color: var(--vurgu); font-weight: 700; }
 .soluk { color: var(--metin-soluk); }

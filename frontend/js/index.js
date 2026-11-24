@@ -7,6 +7,7 @@ const hataKutusu = document.getElementById("menu-hata");
 const bolum = document.getElementById("gunun-menusu");
 const liste = document.getElementById("yemek-listesi");
 const menuYok = document.getElementById("menu-yok");
+const alerjenUyari = document.getElementById("alerjen-uyari");
 
 // Bir yemeğin satırı: kategori, ad, kalori, vejetaryen ve alerjen etiketleri
 function yemekSatiri(y) {
@@ -16,7 +17,10 @@ function yemekSatiri(y) {
         el("span", { class: "kalori" }, y.kalori + " kcal"),
         el("span", { class: "etiketler" },
             y.vejetaryen && el("span", { class: "rozet rozet-vejetaryen" }, "vejetaryen"),
-            y.alerjenler.map((a) => el("span", { class: "rozet" }, a)),
+            // Profildeki alerjenler uyarı rengiyle ve ⚠ ile gösterilir
+            y.alerjenler.map((a) => y.uyari_alerjenler.includes(a)
+                ? el("span", { class: "rozet rozet-uyari", title: "Profilindeki alerjen" }, "⚠ " + a)
+                : el("span", { class: "rozet" }, a)),
         ),
     );
 }
@@ -33,11 +37,18 @@ async function menuyuGetir() {
         liste.replaceChildren(...menu.yemekler.map(yemekSatiri));
         document.getElementById("toplam-kalori").textContent = menu.toplam_kalori + " kcal";
         document.getElementById("fiyat").textContent = tl(menu.fiyat);
+        // Yarım porsiyon yalnızca öğle ve akşamda; API yoksa null döner
+        document.getElementById("yarim-fiyat").textContent = menu.yarim_fiyat != null ? ` (yarım ${tl(menu.yarim_fiyat)})` : "";
+        const uyarili = menu.yemekler.filter((y) => y.uyari_alerjenler.length).map((y) => y.ad);
+        mesaj(alerjenUyari, menu.alerjen_uyarisi
+            ? `Dikkat: ${uyarili.join(", ")} profilindeki alerjenlerden birini içeriyor.`
+            : null, "uyari");
         document.getElementById("bos-yer").textContent = menu.bos_yer;
         bolum.hidden = false;
         menuYok.hidden = true;
     } catch (hata) {
         bolum.hidden = true;
+        mesaj(alerjenUyari, null);
         if (hata.durum === 404) {
             menuYok.hidden = false;
         } else {

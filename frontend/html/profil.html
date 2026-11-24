@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Profil · Yemekhane</title>
+    <link rel="stylesheet" href="../css/temel.css">
+    <link rel="stylesheet" href="../css/profil.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">günün menüsü</a></li>
+            <li><a href="menu.html">haftanın menüsü</a></li>
+            <li><a href="rezervations.html">rezervasyonlarım</a></li>
+            <li><a href="credit.html">bakiye</a></li>
+            <li><a href="rate.html">puan verin</a></li>
+            <li><a href="adminPanel.html">yönetici</a></li>
+            <li><a href="profil.html" aria-current="page">profil</a></li>
+            <li><a href="login.html" id="cikis">çıkış</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main class="centered" id="profil">
+    <h1 class="small-header" id="profil-ad">Profil</h1>
+    <p class="soluk" id="profil-bilgi"></p>
+
+    <section>
+        <h2>alerjenlerim</h2>
+        <p class="soluk">Seçtiğin alerjenleri içeren yemekler menüde uyarıyla gösterilir.</p>
+
+        <!-- Kayıt sonucu ya da hata buraya yazılır -->
+        <p id="profil-mesaj" class="bildirim bildirim-basari" role="status" hidden></p>
+
+        <form id="alerjen-formu">
+            <fieldset>
+                <legend class="gorunmez">Alerjenler</legend>
+                <!-- onay kutuları /api/alerjenler'den üretilir, seçili olanlar /api/profil/alerjenler'den -->
+                <div class="secim-kutulari" id="alerjen-listesi"></div>
+            </fieldset>
+            <button type="submit" class="dugme">kaydet</button>
+        </form>
+    </section>
+</main>
+<script type="module" src="../js/profil.js"></script>
+</body>
+</html>

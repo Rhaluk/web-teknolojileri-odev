@@ -26,7 +26,7 @@ let hafta = pazartesi(bugun());
 // Alınabilir mi kararını API verir (son saat + boş yer); arayüz yalnızca gösterir.
 function islemHucresi(m) {
     if (m.rezervasyon_durumu === "aktif") {
-        return el("span", { class: "rozet rozet-aktif" }, "rezervasyonun var");
+        return el("span", { class: "rozet rozet-aktif" }, m.porsiyon === "yarim" ? "rezervasyonun var (yarım)" : "rezervasyonun var");
     }
     if (m.rezervasyon_durumu === "kullanildi") {
         return el("span", { class: "rozet rozet-kullanildi" }, "kullanıldı");
@@ -34,14 +34,25 @@ function islemHucresi(m) {
     if (!m.rezerve_edilebilir) {
         return el("button", { class: "dugme", disabled: true }, m.bos_yer > 0 ? "süre doldu" : "yer yok");
     }
-    return el("button", { class: "dugme", "data-menu-id": m.menu_id, onclick: rezervasyonYap }, "rezervasyon yap");
+    const dugme = el("button", { class: "dugme", "data-menu-id": m.menu_id, onclick: rezervasyonYap }, "rezervasyon yap");
+    // Aşama 4: yarım porsiyon yalnızca API yarım fiyat verdiyse (öğle/akşam) seçilebilir
+    if (m.yarim_fiyat == null) return dugme;
+    return el("div", { class: "rezervasyon-secim" },
+        el("label", { class: "gorunmez", for: "porsiyon-" + m.menu_id }, "Porsiyon"),
+        el("select", { id: "porsiyon-" + m.menu_id, name: "porsiyon" },
+            el("option", { value: "tam" }, "tam · " + tl(m.fiyat)),
+            el("option", { value: "yarim" }, "yarım · " + tl(m.yarim_fiyat)),
+        ),
+        dugme,
+    );
 }
 
 function satir(m) {
     return el("tr", {},
         el("td", { "data-baslik": "Gün" }, gunMetni(m.tarih)),
         el("td", { "data-baslik": "Öğün" }, m.ogun),
-        el("td", { "data-baslik": "Yemekler", class: "yemekler" }, m.yemekler.join(", ")),
+        el("td", { "data-baslik": "Yemekler", class: "yemekler" }, m.yemekler.join(", "),
+            m.alerjen_uyarisi && el("span", { class: "rozet rozet-uyari", title: "Profilindeki bir alerjeni içeriyor" }, "⚠ alerjen")),
         el("td", { "data-baslik": "Kcal" }, m.toplam_kalori),
         el("td", { "data-baslik": "Fiyat", class: "fiyat" }, tl(m.fiyat)),
         el("td", { "data-baslik": "Boş yer" }, m.bos_yer),
@@ -67,14 +78,18 @@ async function rezervasyonYap(olay) {
     mesaj(mesajKutusu, null);
     try {
         // Yanıttaki bakiye kaynak veritabanından gelir (replikasyon gecikmesi yok)
-        const sonuc = await istek("/rezervasyonlar", { method: "POST", govde: { menu_id: Number(dugme.dataset.menuId) } });
-        mesaj(mesajKutusu, `Rezervasyon yapıldı (${tl(sonuc.ucret)}). Kalan bakiyeniz: ${tl(sonuc.bakiye)}`, "basari");
+        const secim = dugme.closest("td").querySelector('select[name="porsiyon"]');
+        const govde = { menu_id: Number(dugme.dataset.menuId), porsiyon: secim?.value ?? "tam" };
+        const sonuc = await istek("/rezervasyonlar", { method: "POST", govde });
+        const porsiyon = sonuc.porsiyon === "yarim" ? "yarım porsiyon, " : "";
+        mesaj(mesajKutusu, `Rezervasyon yapıldı (${porsiyon}${tl(sonuc.ucret)}). Kalan bakiyeniz: ${tl(sonuc.bakiye)}`, "basari");
         // Tabloyu hemen yeniden istemiyoruz: liste replikadan okunur ve yazma
         // oraya birkaç milisaniye geç ulaşır (replikasyon gecikmesi), eski hali
         // görünürdü. Satırı kaynaktan gelen bu başarılı yanıtla güncelliyoruz.
         const bosYer = dugme.closest("tr").querySelector('[data-baslik="Boş yer"]');
         bosYer.textContent = Number(bosYer.textContent) - 1;
-        dugme.replaceWith(el("span", { class: "rozet rozet-aktif" }, "rezervasyonun var"));
+        (dugme.closest(".rezervasyon-secim") ?? dugme).replaceWith(el("span", { class: "rozet rozet-aktif" },
+            sonuc.porsiyon === "yarim" ? "rezervasyonun var (yarım)" : "rezervasyonun var"));
     } catch (hata) {
         // "Bakiye yetersiz." gibi procedure mesajları olduğu gibi gösterilir
         mesaj(mesajKutusu, hata.message);

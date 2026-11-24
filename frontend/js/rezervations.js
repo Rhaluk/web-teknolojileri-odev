@@ -28,7 +28,7 @@ function islem(r) {
 
 function satir(r) {
     return el("li", {},
-        el("span", { class: "tarih" }, gunMetni(r.tarih) + " · " + r.ogun),
+        el("span", { class: "tarih" }, gunMetni(r.tarih) + " · " + r.ogun + (r.porsiyon === "yarim" ? " · yarım porsiyon" : "")),
         el("span", { class: "yer" }, r.yemekhane),
         el("span", { class: "fiyat" }, tl(r.ucret)),
         rozetler[r.durum].cloneNode(true),

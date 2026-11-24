@@ -56,3 +56,15 @@
 }
 #hafta-gezinti .dugme { white-space: nowrap; }
 #hafta-araligi { font-weight: 600; font-size: 0.875rem; text-align: center; }
+
+/* Aşama 4: porsiyon seçimi + rezervasyon düğmesi */
+.rezervasyon-secim { display: flex; flex-direction: column; gap: 0.4rem; }
+.rezervasyon-secim select {
+    min-height: 40px;
+    padding: 0.3rem 0.5rem;
+    border: 1px solid var(--cizgi);
+    border-radius: var(--kose);
+    background: var(--yuzey-ust);
+    color: var(--metin);
+}
+#weekly-menu-table .yemekler .rozet { margin-left: 0.4rem; }
