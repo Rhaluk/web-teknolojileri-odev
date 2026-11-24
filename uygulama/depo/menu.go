@@ -1,10 +1,13 @@
 package depo
 
 import (
+	"context"
+	"log"
 	"strings"
 	"time"
 
 	"yemekhane/modeller"
+	"yemekhane/onbellek"
 )
 
 // fiyatSecimi kullanıcının rolüne göre fiyat sütununu seçer.
@@ -18,9 +21,51 @@ func (d *Depo) Yemekhaneler() ([]modeller.Yemekhane, error) {
 	return liste, cevir(err)
 }
 
-// GununMenusu bir yemekhanenin verilen gün ve öğündeki menüsünü getirir (replika).
-// Yemekler v_menu_detay'dan kategori sırasıyla gelir, toplam kalori burada toplanır.
+// GununMenusu bir yemekhanenin verilen gün ve öğündeki menüsünü getirir.
+// Menü içeriği önce Redis'e sorulur, yoksa replikadan okunup Redis'e yazılır.
+// Fiyat kullanıcının rolüne göre seçilir; boş yer her istekte replikadan okunur.
 func (d *Depo) GununMenusu(yemekhaneID, ogunID uint, tarih, rol string) (*modeller.GununMenusu, error) {
+	ctx := context.Background()
+	anahtar := onbellek.MenuAnahtari(yemekhaneID, tarih, ogunID)
+
+	var ic modeller.MenuIcerigi
+	if d.onbellek.Getir(ctx, anahtar, &ic) {
+		log.Printf("menü %s → Redis'ten okundu (önbellekte var)", anahtar)
+	} else {
+		bulunan, err := d.menuIcerigi(yemekhaneID, ogunID, tarih)
+		if err != nil {
+			return nil, err
+		}
+		ic = *bulunan
+		sure := d.onbellek.Yaz(ctx, anahtar, ic)
+		log.Printf("menü %s → veritabanından okundu, Redis'e yazıldı (gün sonuna %s)", anahtar, sure.Round(time.Second))
+	}
+
+	menu := &modeller.GununMenusu{
+		MenuID:         ic.MenuID,
+		Tarih:          ic.Tarih,
+		Yemekhane:      ic.Yemekhane,
+		Ogun:           ic.Ogun,
+		RezervasyonSon: ic.RezervasyonSon,
+		Fiyat:          ic.PersonelFiyati,
+		ToplamKalori:   ic.ToplamKalori,
+		Yemekler:       ic.Yemekler,
+	}
+	if rol == "ogrenci" {
+		menu.Fiyat = ic.OgrenciFiyati
+	}
+
+	// Boş yer v_menu_doluluk'tan; her rezervasyonda değiştiği için önbelleğe alınmaz
+	var doluluk struct{ Kapasite, BosYer int }
+	err := d.okuma.Table("v_menu_doluluk").Select("kapasite, bos_yer").
+		Where("menu_id = ?", menu.MenuID).Scan(&doluluk).Error
+	menu.Kapasite, menu.BosYer = doluluk.Kapasite, doluluk.BosYer
+	return menu, cevir(err)
+}
+
+// menuIcerigi menünün yemeklerini v_menu_detay'dan kategori sırasıyla okur
+// ve toplam kaloriyi hesaplar (replika).
+func (d *Depo) menuIcerigi(yemekhaneID, ogunID uint, tarih string) (*modeller.MenuIcerigi, error) {
 	var satirlar []modeller.MenuDetaySatiri
 	err := d.okuma.Table("v_menu_detay").
 		Where("yemekhane_id = ? AND tarih = ? AND ogun_id = ?", yemekhaneID, tarih, ogunID).
@@ -34,32 +79,24 @@ func (d *Depo) GununMenusu(yemekhaneID, ogunID uint, tarih, rol string) (*modell
 	}
 
 	ilk := satirlar[0]
-	menu := &modeller.GununMenusu{
+	ic := &modeller.MenuIcerigi{
 		MenuID:         ilk.MenuID,
 		Tarih:          ilk.Tarih.Format(time.DateOnly),
 		Yemekhane:      ilk.Yemekhane,
 		Ogun:           ilk.Ogun,
 		RezervasyonSon: ilk.RezervasyonSon,
-		Fiyat:          ilk.PersonelFiyati,
-	}
-	if rol == "ogrenci" {
-		menu.Fiyat = ilk.OgrenciFiyati
+		OgrenciFiyati:  ilk.OgrenciFiyati,
+		PersonelFiyati: ilk.PersonelFiyati,
 	}
 	for _, s := range satirlar {
-		menu.ToplamKalori += s.Kalori
+		ic.ToplamKalori += s.Kalori
 		y := modeller.MenuYemegi{ID: s.YemekID, Ad: s.Yemek, Kategori: s.Kategori, Kalori: s.Kalori, Vejetaryen: s.Vejetaryen, Alerjenler: []string{}}
 		if s.Alerjenler != nil {
 			y.Alerjenler = strings.Split(*s.Alerjenler, ", ")
 		}
-		menu.Yemekler = append(menu.Yemekler, y)
+		ic.Yemekler = append(ic.Yemekler, y)
 	}
-
-	// Boş yer v_menu_doluluk'tan
-	var doluluk struct{ Kapasite, BosYer int }
-	err = d.okuma.Table("v_menu_doluluk").Select("kapasite, bos_yer").
-		Where("menu_id = ?", menu.MenuID).Scan(&doluluk).Error
-	menu.Kapasite, menu.BosYer = doluluk.Kapasite, doluluk.BosYer
-	return menu, cevir(err)
+	return ic, nil
 }
 
 // HaftalikMenu bir yemekhanenin baslangic gününden itibaren 7 günlük menülerini

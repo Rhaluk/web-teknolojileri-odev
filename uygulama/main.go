@@ -11,6 +11,7 @@ import (
 
 	"yemekhane/depo"
 	"yemekhane/kontrolcu"
+	"yemekhane/onbellek"
 	"yemekhane/oturum"
 	"yemekhane/veritabani"
 )
@@ -23,7 +24,7 @@ func main() {
 	log.Println("kaynak, replika ve redis bağlantıları hazır")
 
 	od := oturum.Yeni(b.Redis)
-	k := kontrolcu.Yeni(depo.Yeni(b.Yazma, b.Okuma), od)
+	k := kontrolcu.Yeni(depo.Yeni(b.Yazma, b.Okuma, onbellek.Yeni(b.Redis)), od)
 
 	sunucu := &http.Server{
 		Addr:              ":8000",

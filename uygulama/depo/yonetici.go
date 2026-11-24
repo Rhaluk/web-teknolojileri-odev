@@ -1,6 +1,7 @@
 package depo
 
 import (
+	"context"
 	"errors"
 	"time"
 
@@ -8,6 +9,7 @@ import (
 	"gorm.io/gorm"
 
 	"yemekhane/modeller"
+	"yemekhane/onbellek"
 )
 
 const kodYabanciAnahtar = 1452 // FOREIGN KEY ihlali (olmayan yemek/yemekhane/öğün)
@@ -51,8 +53,18 @@ func (d *Depo) MenuGetir(id uint) (*modeller.Menu, error) {
 
 // MenuKaydet menüyü oluşturur (m.ID == 0) ya da günceller. Menü satırı ve
 // yemek listesi aynı transaction içinde kaynağa yazılır; biri başarısız
-// olursa hiçbiri kaydedilmez.
+// olursa hiçbiri kaydedilmez. Kayıt başarılıysa menünün Redis önbelleği
+// silinir; bir sonraki istek yeni menüyü veritabanından okur.
 func (d *Depo) MenuKaydet(m *modeller.Menu) error {
+	// Güncellemede tarih/öğün/yemekhane de değişebilir; eski anahtar da silinmeli
+	var eski *modeller.Menu
+	if m.ID != 0 {
+		var e modeller.Menu
+		if d.yazma.Select("yemekhane_id, DATE_FORMAT(tarih, '%Y-%m-%d') AS tarih, ogun_id").First(&e, m.ID).Error == nil {
+			eski = &e
+		}
+	}
+
 	err := d.yazma.Transaction(func(tx *gorm.DB) error {
 		if m.ID == 0 {
 			if err := tx.Create(m).Error; err != nil {
@@ -95,5 +107,16 @@ func (d *Depo) MenuKaydet(m *modeller.Menu) error {
 			return &IsKuraliHatasi{Mesaj: "Seçilen yemekhane, öğün ya da yemeklerden biri bulunamadı."}
 		}
 	}
-	return cevir(err)
+	if err != nil {
+		return cevir(err)
+	}
+
+	anahtarlar := []string{onbellek.MenuAnahtari(m.YemekhaneID, m.Tarih, m.OgunID)}
+	if eski != nil {
+		if a := onbellek.MenuAnahtari(eski.YemekhaneID, eski.Tarih, eski.OgunID); a != anahtarlar[0] {
+			anahtarlar = append(anahtarlar, a)
+		}
+	}
+	d.onbellek.Sil(context.Background(), anahtarlar...)
+	return nil
 }

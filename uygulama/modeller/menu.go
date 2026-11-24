@@ -40,6 +40,21 @@ type MenuYemegi struct {
 	Alerjenler []string `json:"alerjenler"`
 }
 
+// MenuIcerigi, günün menüsünün Redis'te önbelleğe alınan kısmı. Gün içinde
+// değişmeyen bilgiler burada; kullanıcıya göre değişen fiyat ve her
+// rezervasyonda değişen boş yer önbelleğe girmez.
+type MenuIcerigi struct {
+	MenuID         uint         `json:"menu_id"`
+	Tarih          string       `json:"tarih"`
+	Yemekhane      string       `json:"yemekhane"`
+	Ogun           string       `json:"ogun"`
+	RezervasyonSon time.Time    `json:"rezervasyon_son"`
+	OgrenciFiyati  float64      `json:"ogrenci_fiyati"`
+	PersonelFiyati float64      `json:"personel_fiyati"`
+	ToplamKalori   int          `json:"toplam_kalori"`
+	Yemekler       []MenuYemegi `json:"yemekler"`
+}
+
 // GununMenusu, günün menüsü ekranının yanıtı.
 type GununMenusu struct {
 	MenuID         uint         `json:"menu_id"`
