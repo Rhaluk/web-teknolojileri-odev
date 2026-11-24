@@ -39,85 +39,11 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-        <td data-baslik="tarih">
-            Perşembe 12 Kasım · Öğle
-        </td>
-        <td data-baslik="menu">
-            Merkez Yemekhane
-        </td>
-        <td data-baslik="Yorum">
-            <label for="yorum-136" class="gorunmez">Yorum</label>
-            <input type="text" id="yorum-136" name="yorum" form="form-136" maxlength="500" placeholder="isteğe bağlı">
-        </td>
-        <td data-baslik="Puan">
-            <!-- 5 radio, maskeli div'in üstüne yerleşir; seçilen değer puan olarak gönderilir -->
-            <fieldset class="yildiz-kutu" form="form-136">
-                <legend class="gorunmez">Puan</legend>
-                <input type="radio" id="p136-1" name="puan" value="1" form="form-136" required><label for="p136-1"><span class="gorunmez">1 yıldız</span></label>
-                <input type="radio" id="p136-2" name="puan" value="2" form="form-136"><label for="p136-2"><span class="gorunmez">2 yıldız</span></label>
-                <input type="radio" id="p136-3" name="puan" value="3" form="form-136"><label for="p136-3"><span class="gorunmez">3 yıldız</span></label>
-                <input type="radio" id="p136-4" name="puan" value="4" form="form-136"><label for="p136-4"><span class="gorunmez">4 yıldız</span></label>
-                <input type="radio" id="p136-5" name="puan" value="5" form="form-136"><label for="p136-5"><span class="gorunmez">5 yıldız</span></label>
-                <div class="stars-div" aria-hidden="true"></div>
-            </fieldset>
-        </td>
-        <td>
-            <form id="form-136" data-menu-id="136">
-                <button type="submit" class="dugme">gönder</button>
-            </form>
-        </td>
-    </tr>
-    <tr>
-        <td data-baslik="tarih">
-            Pazar 8 Kasım · Kahvaltı
-        </td>
-        <td data-baslik="menu">
-            Merkez Yemekhane
-        </td>
-        <td data-baslik="Yorum">
-            <label for="yorum-28" class="gorunmez">Yorum</label>
-            <input type="text" id="yorum-28" name="yorum" form="form-28" maxlength="500" placeholder="isteğe bağlı">
-        </td>
-        <td data-baslik="Puan">
-            <!-- 5 radio, maskeli div'in üstüne yerleşir; seçilen değer puan olarak gönderilir -->
-            <fieldset class="yildiz-kutu" form="form-28">
-                <legend class="gorunmez">Puan</legend>
-                <input type="radio" id="p28-1" name="puan" value="1" form="form-28" required><label for="p28-1"><span class="gorunmez">1 yıldız</span></label>
-                <input type="radio" id="p28-2" name="puan" value="2" form="form-28"><label for="p28-2"><span class="gorunmez">2 yıldız</span></label>
-                <input type="radio" id="p28-3" name="puan" value="3" form="form-28"><label for="p28-3"><span class="gorunmez">3 yıldız</span></label>
-                <input type="radio" id="p28-4" name="puan" value="4" form="form-28"><label for="p28-4"><span class="gorunmez">4 yıldız</span></label>
-                <input type="radio" id="p28-5" name="puan" value="5" form="form-28"><label for="p28-5"><span class="gorunmez">5 yıldız</span></label>
-                <div class="stars-div" aria-hidden="true"></div>
-            </fieldset>
-        </td>
-        <td>
-            <form id="form-28" data-menu-id="28">
-                <button type="submit" class="dugme">gönder</button>
-            </form>
-        </td>
-    </tr>
-    <!-- Daha önce puanlanmış menü: yıldızlar yalnızca gösterilir, değiştirilemez -->
-    <tr>
-        <td data-baslik="tarih">
-            Cumartesi 7 Kasım · Öğle
-        </td>
-        <td data-baslik="menu">
-            Mühendislik Yemekhanesi
-        </td>
-        <td data-baslik="Yorum">
-            <span class="soluk">Ana yemek soğuktu.</span>
-        </td>
-        <td data-baslik="Puan">
-            <div class="stars-div" style="--puan: 3" role="img" aria-label="5 üzerinden 3 yıldız"></div>
-        </td>
-        <td>
-            <span class="rozet rozet-kullanildi">puanlandı</span>
-        </td>
-    </tr>
+    <!-- satırlar /api/degerlendirmeler'den doldurulur (yapı için js/rate.js) -->
     </tbody>
 </table>
+    <p id="puan-bos" class="soluk" hidden>Henüz yemek yediğiniz bir menü yok.</p>
 </main>
-
+<script type="module" src="../js/rate.js"></script>
 </body>
 </html>
