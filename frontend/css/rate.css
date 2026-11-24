@@ -1,10 +1,87 @@
 #rate-table{
-
+    margin-top: 1rem;
 }
 
-#stars-div{
+#rate-table input[type="text"] {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.5rem;
+    border: 1px solid var(--cizgi);
+    border-radius: var(--kose);
+    background: var(--yuzey-ust);
+    color: var(--metin);
+}
+
+/* Yıldızlar: tek bir div, maske 5 kez yan yana tekrarlanır (1 yıldız 1.5rem).
+   Her satırda olduğu için id yerine class kullanıldı.
+   Arka plan iki renkli: soldan --puan kadar yıldızı --renk ile, kalanı
+   boş renkle boyar. Maske bu zemini yıldız şeklinde keser.
+   --puan ve --renk burada tanımlanmaz, kapsayıcıdan kalıtımla gelir;
+   tanımlanmamışsa var() içindeki yedek değer (0 ve safran) kullanılır. */
+.stars-div{
+    -webkit-mask-image: url('../images/star-rounded.svg');
     mask-image: url('../images/star-rounded.svg');
+    -webkit-mask-size: 1.5rem;
+    mask-size: 1.5rem;
     width: 7.5rem;
     height: 1.5rem;
-    background-color: white;
+    background: linear-gradient(to right,
+        var(--renk, var(--vurgu)) calc(var(--puan, 0) * 1.5rem),
+        var(--cizgi) 0);
+}
+
+/* Tıklama alanı: 5 radio'nun label'ı yıldızların tam üstüne biner.
+   Label'lar şeffaf; görünen şey alttaki .stars-div. */
+.yildiz-kutu {
+    position: relative;
+    width: 7.5rem;
+    height: 1.5rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+}
+.yildiz-kutu input { position: absolute; opacity: 0; pointer-events: none; }
+.yildiz-kutu label {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0;
+    cursor: pointer;
+}
+.yildiz-kutu label:nth-of-type(1) { left: 0; }
+.yildiz-kutu label:nth-of-type(2) { left: 1.5rem; }
+.yildiz-kutu label:nth-of-type(3) { left: 3rem; }
+.yildiz-kutu label:nth-of-type(4) { left: 4.5rem; }
+.yildiz-kutu label:nth-of-type(5) { left: 6rem; }
+
+/* Değişkenler kapsayıcıda değişir, içteki .stars-div kalıtımla alır.
+   1) Tıklanan (checked) yıldıza kadar seçili renkte doldur */
+.yildiz-kutu:has(input[value="1"]:checked) { --puan: 1; }
+.yildiz-kutu:has(input[value="2"]:checked) { --puan: 2; }
+.yildiz-kutu:has(input[value="3"]:checked) { --puan: 3; }
+.yildiz-kutu:has(input[value="4"]:checked) { --puan: 4; }
+.yildiz-kutu:has(input[value="5"]:checked) { --puan: 5; }
+
+/* 2) Fare üstündeyse farenin altındaki yıldıza kadar hover renginde doldur.
+   Özgüllük yukarıdakilerle aynı; sonra yazıldığı için hover seçimi ezer,
+   fare çekilince seçim geri gelir. */
+.yildiz-kutu:has(label:nth-of-type(1):hover) { --puan: 1; --renk: var(--ana-hover); }
+.yildiz-kutu:has(label:nth-of-type(2):hover) { --puan: 2; --renk: var(--ana-hover); }
+.yildiz-kutu:has(label:nth-of-type(3):hover) { --puan: 3; --renk: var(--ana-hover); }
+.yildiz-kutu:has(label:nth-of-type(4):hover) { --puan: 4; --renk: var(--ana-hover); }
+.yildiz-kutu:has(label:nth-of-type(5):hover) { --puan: 5; --renk: var(--ana-hover); }
+
+/* Klavyeyle (Tab + ok tuşları) gezinirken odak görünsün */
+.yildiz-kutu:has(input:focus-visible) { outline: 3px solid var(--odak); outline-offset: 3px; }
+
+#rate-table td { vertical-align: middle; }
+#rate-table .dugme { white-space: nowrap; }
+
+@media (max-width: 40rem) {
+    #rate-table td { align-items: center; }
+    #rate-table td[data-baslik="Yorum"] { flex-direction: column; align-items: stretch; text-align: left; }
+    #rate-table form, #rate-table .dugme { width: 100%; }
 }
