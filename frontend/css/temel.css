@@ -38,12 +38,20 @@
 
     /* Odak halkası (klavye ile gezinme) */
     --odak:           #F2B134;
+
+    /* Yazı */
+    --yazi: "Segoe UI", system-ui, -apple-system, Roboto, "Noto Sans", sans-serif;
+    --kose: 0.5rem;
+
+    color-scheme: dark;   /* tarih seçici, select gibi tarayıcı öğeleri de koyu olsun */
   }
+/* Ortalanmış içerik kutusu. Önceden position: absolute + translate ile
+   ortalanıyordu; içerik ekrandan uzun olunca (haftalık tablo gibi) üst kısmı
+   ekran dışına taşıyor ve kaydırılamıyordu. Artık yatayda ortalanıp normal
+   akışta kalıyor. */
 .centered {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  width: min(100% - 2rem, 60rem);
+  margin: 2rem auto;
 }
 
 .small-header{
@@ -56,6 +64,7 @@ html { -webkit-text-size-adjust: 100%; }
 
 body {
   margin: 0;
+  font-family: var(--yazi);
   line-height: 1.5;
   color: var(--metin);
   background: var(--zemin);
@@ -131,7 +140,9 @@ nav ul a:hover{
   text-align: center;
   width: 100%;
 }
-#weekly-menu-table th, td {
+/* "th, td" yazınca virgülden sonraki td tek başına seçici olur ve sitedeki
+   bütün tablolara uygulanır; bu yüzden td de tabloya bağlandı. */
+#weekly-menu-table th, #weekly-menu-table td {
     border: 1px solid var(--metin);
     padding: 1.5rem 1.75rem;
 }
@@ -141,6 +152,162 @@ nav ul a:hover{
   transition: background-color 0.2s ease;
 }
 
+/* =====================================================================
+   Ortak parçalar · birden fazla sayfada kullanılır
+   ===================================================================== */
 
+/* ---------- Üst menü ---------- */
+nav { width: 100%; }
 
+nav ul {
+  margin: 0;
+  padding: 0.75rem 1rem;
+  justify-content: center;
+}
 
+/* Bulunulan sayfanın bağlantısı */
+nav ul li a[aria-current="page"] {
+  color: var(--vurgu);
+  font-weight: 600;
+}
+
+/* ---------- Form öğeleri ---------- */
+input, select, textarea, button { font: inherit; }
+
+label { display: block; margin-bottom: 0.25rem; font-weight: 600; }
+
+.alan { margin-bottom: 1rem; }
+
+/* ---------- Düğme ----------
+   Dokunmatik ekranda rahat basılabilmesi için en az 44 px yükseklik */
+.dugme {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0.6rem 1.1rem;
+  border: 0;
+  border-radius: var(--kose);
+  background: var(--ana);
+  color: var(--ana-ustu-metin);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+.dugme:hover { background: var(--ana-hover); }
+
+/* İptal gibi geri alınamaz işlemler */
+.dugme-tehlike {
+  background: transparent;
+  border: 1px solid var(--hata);
+  color: var(--hata);
+}
+.dugme-tehlike:hover { background: var(--hata-zemin); }
+
+/* Rezervasyon son saati geçtiğinde */
+.dugme:disabled {
+  background: var(--pasif-zemin);
+  border-color: transparent;
+  color: var(--pasif-metin);
+  cursor: not-allowed;
+}
+
+:focus-visible { outline: 3px solid var(--odak); outline-offset: 2px; }
+
+/* ---------- Bildirim kutusu ----------
+   Stored procedure'lerden dönen Türkçe hata mesajları buraya yazılır:
+   <p class="bildirim bildirim-hata" role="alert">Bakiye yetersiz.</p> */
+.bildirim {
+  padding: 0.75rem 1rem;
+  border-radius: var(--kose);
+  border-left: 4px solid currentColor;
+}
+.bildirim-hata   { color: var(--hata);   background: var(--hata-zemin); }
+.bildirim-basari { color: var(--basari); background: var(--basari-zemin); }
+
+/* ---------- Rozet: küçük durum etiketi ---------- */
+.rozet {
+  display: inline-block;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--metin-soluk);
+  background: var(--yuzey-ust);
+}
+.rozet-aktif, .rozet-vejetaryen { color: var(--basari); background: var(--basari-zemin); }
+.rozet-kullanildi               { color: var(--bilgi);  background: var(--bilgi-zemin); }
+.rozet-iptal                    { color: var(--hata);   background: var(--hata-zemin); }
+
+.fiyat { color: var(--vurgu); font-weight: 700; }
+.soluk { color: var(--metin-soluk); }
+
+/* ---------- Tablo ---------- */
+.tablo {
+  width: 100%;
+  border-collapse: collapse;
+}
+.tablo th, .tablo td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--cizgi);
+}
+.tablo th { color: var(--metin-soluk); font-size: 0.8rem; }
+
+/* Telefonda tablo satırları alt alta kartlara dönüşür.
+   Her hücrenin başlığı td'deki data-baslik özelliğinden gelir. */
+@media (max-width: 40rem) {
+  .tablo-kart thead { display: none; }
+  .tablo-kart, .tablo-kart tbody, .tablo-kart tr, .tablo-kart td { display: block; }
+  .tablo-kart tr {
+    margin-bottom: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--cizgi);
+    border-radius: var(--kose);
+    background: var(--yuzey);
+  }
+  .tablo-kart td {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0;
+    border: 0;
+  }
+  .tablo-kart td[data-baslik]::before {
+    content: attr(data-baslik);
+    color: var(--metin-soluk);
+    font-weight: 600;
+  }
+}
+
+/* Ekranda görünmez, ekran okuyucu okur (ör. "3 yıldız") */
+.gorunmez {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* ---------- Telefon (yaklaşık 400 px) ---------- */
+@media (max-width: 40rem) {
+  /* Menü tek satırda kalır, yana kaydırılır */
+  nav ul {
+    justify-content: flex-start;
+    gap: 1rem;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* Giriş formu ekran genişliğine sığar */
+  #login-div { width: calc(100% - 2rem); padding: 0; }
+  #login-div form { gap: 1.25rem; }
+  #login-div form input,
+  #login-div form button { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
