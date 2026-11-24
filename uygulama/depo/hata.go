@@ -22,7 +22,7 @@ func (h *IsKuraliHatasi) Error() string { return h.Mesaj }
 
 // MySQL hata kodları
 const (
-	kodSignal     = 1644 // SIGNAL SQLSTATE '45000' (procedure iş kuralı hatası)
+	kodSignal      = 1644 // SIGNAL SQLSTATE '45000' (procedure iş kuralı hatası)
 	kodTekrarKayit = 1062 // UNIQUE ihlali
 )
 

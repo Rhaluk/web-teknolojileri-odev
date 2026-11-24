@@ -19,7 +19,8 @@ func (d *durumYakalayici) WriteHeader(kod int) {
 }
 
 // Gunluk her isteği yöntem, yol, durum kodu ve süreyle günlüğe yazar:
-//   GET /api/menu 200 3ms
+//
+//	GET /api/menu 200 3ms
 func Gunluk(sonraki http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		baslangic := time.Now()

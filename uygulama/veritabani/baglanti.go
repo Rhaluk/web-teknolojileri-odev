@@ -17,8 +17,9 @@ import (
 )
 
 // Baglantilar uygulamanın kullandığı üç bağlantıyı bir arada tutar.
-//   Yazma: mysql-primary  → INSERT/UPDATE ve stored procedure çağrıları
-//   Okuma: mysql-replica  → listeleme ve raporlar (salt okunur)
+//
+//	Yazma: mysql-primary  → INSERT/UPDATE ve stored procedure çağrıları
+//	Okuma: mysql-replica  → listeleme ve raporlar (salt okunur)
 type Baglantilar struct {
 	Yazma *gorm.DB
 	Okuma *gorm.DB
