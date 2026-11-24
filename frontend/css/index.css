@@ -1,0 +1,92 @@
+/* Günün menüsü sayfası */
+
+#menu-secim {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Geniş ekranda yemekhane ve öğün seçimi yan yana */
+@media (min-width: 40rem) {
+    #menu-secim { grid-template-columns: 1fr 1fr; align-items: end; }
+}
+
+#menu-secim select {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.5rem;
+    border: 1px solid var(--cizgi);
+    border-radius: var(--kose);
+    background: var(--yuzey-ust);
+    color: var(--metin);
+}
+
+#menu-secim .alan { margin: 0; }
+#menu-secim fieldset { border: 0; padding: 0; min-width: 0; }
+#menu-secim legend { padding: 0; margin-bottom: 0.25rem; font-weight: 600; }
+
+/* Öğün seçimi: radio düğmeleri sekme gibi görünür */
+.ogun-secim {
+    position: relative;
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.25rem;
+    border: 1px solid var(--cizgi);
+    border-radius: var(--kose);
+    background: var(--yuzey-ust);
+}
+.ogun-secim input { position: absolute; opacity: 0; }
+.ogun-secim label {
+    flex: 1;
+    margin: 0;
+    padding: 0.5rem;
+    border-radius: var(--kose);
+    text-align: center;
+    color: var(--metin-soluk);
+    cursor: pointer;
+}
+.ogun-secim input:checked + label { background: var(--ana); color: var(--ana-ustu-metin); }
+.ogun-secim input:focus-visible + label { outline: 3px solid var(--odak); }
+
+/* Yemek listesi */
+#gunun-menusu {
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--cizgi);
+    border-radius: var(--kose);
+    background: var(--yuzey);
+}
+
+#yemek-listesi {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#yemek-listesi li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.25rem 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--cizgi);
+}
+
+#yemek-listesi .kategori {
+    grid-column: 1 / -1;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--metin-soluk);
+}
+#yemek-listesi .yemek   { font-weight: 600; }
+#yemek-listesi .kalori  { color: var(--metin-soluk); white-space: nowrap; }
+#yemek-listesi .etiketler { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 0.3rem; }
+
+#menu-ozet {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1rem;
+}
+#menu-ozet p { margin: 0; }
+#menu-ozet strong { color: var(--vurgu); }
