@@ -8,3 +8,51 @@
 
 }
 
+
+/* Bakiye tutarı büyük ve öne çıksın */
+#bakiye { font-size: 1.75rem; }
+
+#credit-container > div { margin-top: 2rem; }
+
+/* Yükleme formu */
+#yukleme-formu { display: grid; gap: 0.5rem; max-width: 24rem; }
+#yukleme-formu input[type="number"] {
+    min-height: 44px;
+    padding: 0.5rem;
+    border: 1px solid var(--cizgi);
+    border-radius: var(--kose);
+    background: var(--yuzey-ust);
+    color: var(--metin);
+}
+#yukleme-formu .soluk { margin: 0; font-size: 0.8rem; }
+
+/* Hızlı tutar seçimi: radio düğmeleri çip gibi görünür */
+#hizli-tutar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 0.5rem;
+    padding: 0;
+    border: 0;
+}
+#hizli-tutar legend { padding: 0; margin-bottom: 0.25rem; font-weight: 600; }
+#hizli-tutar input { position: absolute; opacity: 0; }
+#hizli-tutar label {
+    margin: 0;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--cizgi);
+    border-radius: 999px;
+    font-weight: 400;
+    cursor: pointer;
+}
+#hizli-tutar input:checked + label { border-color: var(--ana); background: var(--basari-zemin); }
+#hizli-tutar input:focus-visible + label { outline: 3px solid var(--odak); }
+
+/* Hareket tutarları: yükleme ve iade yeşil, rezervasyon kırmızı */
+.tutar-arti { color: var(--basari); white-space: nowrap; }
+.tutar-eksi { color: var(--hata); white-space: nowrap; }
+#hareketler td:last-child, #hareketler th:last-child { text-align: right; }
+
+@media (max-width: 40rem) {
+    #credit-container { padding: 1rem; }
+}

@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bakiye · Yemekhane</title>
-    <link rel="stylesheet" href="../css/credit.css">
+    <!-- temel.css önce yüklenmeli; sonra gelen credit.css onun üzerine yazabilsin -->
     <link rel="stylesheet" href="../css/temel.css">
+    <link rel="stylesheet" href="../css/credit.css">
 </head>
 <body>
 
@@ -25,18 +26,85 @@
 </header>
 
 <div id="credit-container" class="centered">
-    <h3>merhaba isim</h3>
-    <p>mevcut krediniz 100 TL</p>
+    <h3>merhaba Mehmet Yıldız</h3>
+    <!-- Rezervasyondan hemen sonra bu tutar kaynak veritabanından okunur
+         (replika birkaç saniye geride kalabilir) -->
+    <p>mevcut krediniz <strong id="bakiye" class="fiyat">355,00 TL</strong></p>
 
     <div>
         <h3> kredi yükle</h3>
 
+        <!-- Sonuç ya da procedure hatası buraya yazılır
+             (ör. "Yükleme tutarı 10 ile 1000 TL arasında olmalıdır.") -->
+        <p id="yukleme-mesaj" class="bildirim bildirim-hata" role="alert" hidden></p>
+
+        <form id="yukleme-formu">
+            <fieldset id="hizli-tutar">
+                <legend>hızlı seçim</legend>
+                <input type="radio" id="tutar-50" name="hizli" value="50">
+                <label for="tutar-50">50 TL</label>
+                <input type="radio" id="tutar-100" name="hizli" value="100" checked>
+                <label for="tutar-100">100 TL</label>
+                <input type="radio" id="tutar-200" name="hizli" value="200">
+                <label for="tutar-200">200 TL</label>
+                <input type="radio" id="tutar-500" name="hizli" value="500">
+                <label for="tutar-500">500 TL</label>
+            </fieldset>
+
+            <label for="tutar">tutar (TL)</label>
+            <input id="tutar" name="tutar" type="number" min="10" max="1000" step="0.01" value="100" inputmode="decimal">
+            <p class="soluk">Tek seferde 10 ile 1000 TL arası yüklenebilir.</p>
+
+            <button type="submit" class="dugme">yükle</button>
+        </form>
     </div>
 
     <div>
         <h3>
             geçmiş hareketler
         </h3>
+
+        <table class="tablo tablo-kart" id="hareketler">
+            <thead>
+            <tr>
+                <th>tarih</th>
+                <th>açıklama</th>
+                <th>tutar</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td data-baslik="tarih">14.11.2026 07:40</td>
+                <td data-baslik="açıklama">Rezervasyon</td>
+                <td data-baslik="tutar" class="tutar-eksi">−40,00 TL</td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">14.11.2026 06:40</td>
+                <td data-baslik="açıklama">Rezervasyon</td>
+                <td data-baslik="tutar" class="tutar-eksi">−40,00 TL</td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">14.11.2026 02:40</td>
+                <td data-baslik="açıklama">Rezervasyon</td>
+                <td data-baslik="tutar" class="tutar-eksi">−40,00 TL</td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">13.11.2026 22:40</td>
+                <td data-baslik="açıklama">Rezervasyon</td>
+                <td data-baslik="tutar" class="tutar-eksi">−40,00 TL</td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">10.11.2026 20:30</td>
+                <td data-baslik="açıklama">Rezervasyon iptali</td>
+                <td data-baslik="tutar" class="tutar-arti">+40,00 TL</td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">04.11.2026 16:15</td>
+                <td data-baslik="açıklama">Bakiye yükleme</td>
+                <td data-baslik="tutar" class="tutar-arti">+750,00 TL</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 
