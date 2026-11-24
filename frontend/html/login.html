@@ -1,29 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Giriş · Yemekhane</title>
     <link rel="stylesheet" href="../css/temel.css">
 </head>
     <body>
+        <!-- Giriş yapmamış kullanıcı diğer sayfalara gidemeyeceği için
+             burada menü bağlantıları yok, yalnızca site adı var. -->
         <header>
-            <nav>
-                <ul>
-                    <li><a href="menu.html">haftanın menüsü </a></li>
-                    <li><a href="menu.html">günün menüsü</a></li>
-                    <li><a href="booking.html">rezervosyanlarım</a></li>
-                    <li><a href="credit.html">bakiye yükle</a></li>
-                    <li><a href="rate.html">puan verin</a></li>
-                </ul>
-
-            </nav>
+            <p class="site-adi">Yemekhane</p>
         </header>
 
         <div id="login-div">
-            <form>
-                <input type="text" placeholder="Kullanıcı Adı">
-                <input type="password" placeholder="Şifre">
-                <button>Giriş Yap</button>
+            <h1 class="small-header">Hesabına giriş yap</h1>
+
+            <!-- API'den dönen hata mesajı buraya yazılır (ör. "E-posta ya da şifre hatalı.") -->
+            <p id="giris-hata" class="bildirim bildirim-hata" role="alert" hidden></p>
+
+            <form id="giris-formu">
+                <!-- label ekranda görünmüyor ama ekran okuyucu alanın adını okuyabiliyor -->
+                <label for="eposta" class="gorunmez">E-posta</label>
+                <input id="eposta" name="eposta" type="email" placeholder="E-posta"
+                       autocomplete="username" required>
+
+                <label for="sifre" class="gorunmez">Şifre</label>
+                <input id="sifre" name="sifre" type="password" placeholder="Şifre"
+                       autocomplete="current-password" required>
+
+                <button type="submit">Giriş Yap</button>
             </form>
         </div>
     </body>

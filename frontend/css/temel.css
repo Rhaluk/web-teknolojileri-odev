@@ -311,3 +311,15 @@ label { display: block; margin-bottom: 0.25rem; font-weight: 600; }
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }
+
+/* ---------- Giriş sayfası ---------- */
+.site-adi {
+  margin: 0;
+  padding: 1rem;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--ana);
+}
+
+#login-div h1 { text-align: center; color: var(--metin-soluk); }
+#login-div .bildirim { margin-bottom: 1.5rem; }
