@@ -11,7 +11,8 @@ type Rezervasyon struct {
 	Ogun            string    `gorm:"column:ogun" json:"ogun"`
 	Yemekhane       string    `gorm:"column:yemekhane" json:"yemekhane"`
 	Ucret           float64   `gorm:"column:ucret" json:"ucret"`
-	Durum           string    `gorm:"column:durum" json:"durum"` // aktif | kullanildi | iptal
+	Durum           string    `gorm:"column:durum" json:"durum"`       // aktif | kullanildi | iptal
+	Porsiyon        string    `gorm:"column:porsiyon" json:"porsiyon"` // tam | yarim
 	IptalEdilebilir bool      `gorm:"column:iptal_edilebilir" json:"iptal_edilebilir"`
 	Degerlendirildi bool      `gorm:"column:degerlendirildi" json:"degerlendirildi"`
 }
@@ -21,6 +22,7 @@ type RezervasyonSonucu struct {
 	RezervasyonID uint    `gorm:"column:rezervasyon_id" json:"rezervasyon_id"`
 	Ucret         float64 `gorm:"column:ucret" json:"ucret"`
 	Bakiye        float64 `gorm:"column:bakiye" json:"bakiye"`
+	Porsiyon      string  `gorm:"column:porsiyon" json:"porsiyon"`
 }
 
 // IptalSonucu, sp_rezervasyon_iptal'in döndürdüğü satır.

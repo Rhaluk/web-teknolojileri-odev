@@ -32,18 +32,23 @@ type MenuDetaySatiri struct {
 
 // MenuYemegi, API yanıtında menüdeki bir yemek.
 type MenuYemegi struct {
-	ID         uint     `json:"id"`
-	Ad         string   `json:"ad"`
-	Kategori   string   `json:"kategori"`
-	Kalori     int      `json:"kalori"`
-	Vejetaryen bool     `json:"vejetaryen"`
-	Alerjenler []string `json:"alerjenler"`
+	ID           uint     `json:"id"`
+	Ad           string   `json:"ad"`
+	Kategori     string   `json:"kategori"`
+	Kalori       int      `json:"kalori"`
+	Vejetaryen   bool     `json:"vejetaryen"`
+	Alerjenler   []string `json:"alerjenler"`
+	AlerjenIDler []uint   `json:"alerjen_idler"`
+	// Kullanıcının profilindeki alerjenlerden bu yemekte bulunanlar.
+	// Kullanıcıya göre değiştiği için önbellekteki kayıtta hep boştur.
+	UyariAlerjenler []string `json:"uyari_alerjenler"`
 }
 
 // MenuIcerigi, günün menüsünün Redis'te önbelleğe alınan kısmı. Gün içinde
 // değişmeyen bilgiler burada; kullanıcıya göre değişen fiyat ve her
 // rezervasyonda değişen boş yer önbelleğe girmez.
 type MenuIcerigi struct {
+	Surum          int          `json:"surum"` // önbellekteki yapının sürümü (onbellek.MenuSurumu)
 	MenuID         uint         `json:"menu_id"`
 	Tarih          string       `json:"tarih"`
 	Yemekhane      string       `json:"yemekhane"`
@@ -51,6 +56,7 @@ type MenuIcerigi struct {
 	RezervasyonSon time.Time    `json:"rezervasyon_son"`
 	OgrenciFiyati  float64      `json:"ogrenci_fiyati"`
 	PersonelFiyati float64      `json:"personel_fiyati"`
+	YarimOrani     *float64     `json:"yarim_porsiyon_orani"` // nil: bu öğünde yarım porsiyon yok
 	ToplamKalori   int          `json:"toplam_kalori"`
 	Yemekler       []MenuYemegi `json:"yemekler"`
 }
@@ -62,7 +68,9 @@ type GununMenusu struct {
 	Yemekhane      string       `json:"yemekhane"`
 	Ogun           string       `json:"ogun"`
 	RezervasyonSon time.Time    `json:"rezervasyon_son"`
-	Fiyat          float64      `json:"fiyat"` // kullanıcının rolüne göre
+	Fiyat          float64      `json:"fiyat"`       // kullanıcının rolüne göre
+	YarimFiyat     *float64     `json:"yarim_fiyat"` // nil: yarım porsiyon yok
+	AlerjenUyarisi bool         `json:"alerjen_uyarisi"`
 	BosYer         int          `json:"bos_yer"`
 	Kapasite       int          `json:"kapasite"`
 	ToplamKalori   int          `json:"toplam_kalori"`
@@ -80,8 +88,11 @@ type HaftalikMenu struct {
 	Yemekler          []string  `gorm:"-" json:"yemekler"`
 	ToplamKalori      int       `gorm:"column:toplam_kalori" json:"toplam_kalori"`
 	Fiyat             float64   `gorm:"column:fiyat" json:"fiyat"`
+	YarimFiyat        *float64  `gorm:"column:yarim_fiyat" json:"yarim_fiyat"` // nil: yarım porsiyon yok
+	AlerjenUyarisi    bool      `gorm:"column:alerjen_uyarisi" json:"alerjen_uyarisi"`
 	BosYer            int       `gorm:"column:bos_yer" json:"bos_yer"`
 	RezervasyonSon    time.Time `gorm:"column:rezervasyon_son" json:"rezervasyon_son"`
 	RezerveEdilebilir bool      `gorm:"column:rezerve_edilebilir" json:"rezerve_edilebilir"`
 	RezervasyonDurumu *string   `gorm:"column:rezervasyon_durumu" json:"rezervasyon_durumu"` // aktif | kullanildi | iptal | null
+	Porsiyon          *string   `gorm:"column:porsiyon" json:"porsiyon"`                     // kullanıcının rezervasyonundaki
 }

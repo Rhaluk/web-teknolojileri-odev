@@ -9,13 +9,16 @@ import (
 	"yemekhane/ara"
 )
 
-// RezervasyonYap  POST /api/rezervasyonlar  {"menu_id": 68}
+// RezervasyonYap  POST /api/rezervasyonlar  {"menu_id": 68, "porsiyon": "yarim"}
+// porsiyon verilmezse "tam". Kahvaltıda yarım porsiyon yoktur kuralını ve
+// yarım ücreti (%60) stored procedure uygular; mesajı olduğu gibi döner.
 // Yanıttaki bakiye stored procedure'den, yani kaynaktan gelir; arayüz bunu
 // gösterir. Replikadan okunsaydı replikasyon gecikmesi yüzünden eski bakiye
 // görünebilirdi.
 func (k *Kontrolcu) RezervasyonYap(w http.ResponseWriter, r *http.Request) {
 	var istek struct {
-		MenuID uint `json:"menu_id"`
+		MenuID   uint   `json:"menu_id"`
+		Porsiyon string `json:"porsiyon"`
 	}
 	if !govdeOku(w, r, &istek) {
 		return
@@ -24,7 +27,15 @@ func (k *Kontrolcu) RezervasyonYap(w http.ResponseWriter, r *http.Request) {
 		Hata(w, http.StatusBadRequest, "menu_id gerekli.")
 		return
 	}
-	sonuc, err := k.depo.RezervasyonYap(ara.Kullanici(r).KullaniciID, istek.MenuID)
+	switch istek.Porsiyon {
+	case "":
+		istek.Porsiyon = "tam"
+	case "tam", "yarim":
+	default:
+		Hata(w, http.StatusUnprocessableEntity, "Geçersiz porsiyon seçimi.")
+		return
+	}
+	sonuc, err := k.depo.RezervasyonYap(ara.Kullanici(r).KullaniciID, istek.MenuID, istek.Porsiyon)
 	if err != nil {
 		DepoHatasi(w, err)
 		return

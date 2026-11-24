@@ -10,10 +10,11 @@ import (
 // çalışır. Yordamlar kendi transaction'larını açtığı için burada ayrıca
 // Begin/Commit yapılmaz. Dönen bakiye kaynaktan geldiği için günceldir.
 
-// RezervasyonYap  sp_rezervasyon_yap(kullanici_id, menu_id)
-func (d *Depo) RezervasyonYap(kullaniciID, menuID uint) (*modeller.RezervasyonSonucu, error) {
+// RezervasyonYap  sp_rezervasyon_yap(kullanici_id, menu_id, porsiyon)
+// porsiyon 'tam' ya da 'yarim'; geçerliliğini ve ücretini yordam belirler.
+func (d *Depo) RezervasyonYap(kullaniciID, menuID uint, porsiyon string) (*modeller.RezervasyonSonucu, error) {
 	var s modeller.RezervasyonSonucu
-	err := d.yazma.Raw("CALL sp_rezervasyon_yap(?, ?)", kullaniciID, menuID).Scan(&s).Error
+	err := d.yazma.Raw("CALL sp_rezervasyon_yap(?, ?, ?)", kullaniciID, menuID, porsiyon).Scan(&s).Error
 	return &s, cevir(err)
 }
 
@@ -36,7 +37,7 @@ func (d *Depo) BakiyeYukle(kullaniciID uint, tutar float64) (*modeller.YuklemeSo
 func (d *Depo) Rezervasyonlarim(kullaniciID uint) ([]modeller.Rezervasyon, error) {
 	var liste []modeller.Rezervasyon
 	err := d.okuma.Raw(`
-		SELECT r.id, r.menu_id, m.tarih, o.ad AS ogun, yh.ad AS yemekhane, r.ucret, r.durum,
+		SELECT r.id, r.menu_id, m.tarih, o.ad AS ogun, yh.ad AS yemekhane, r.ucret, r.durum, r.porsiyon,
 		       r.durum = 'aktif' AND NOW() < TIMESTAMP(m.tarih, o.son_saat) AS iptal_edilebilir,
 		       EXISTS (SELECT 1 FROM degerlendirmeler dg
 		                WHERE dg.menu_id = r.menu_id AND dg.kullanici_id = r.kullanici_id) AS degerlendirildi

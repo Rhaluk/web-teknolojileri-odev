@@ -4,6 +4,7 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"time"
@@ -24,7 +25,9 @@ func main() {
 	log.Println("kaynak, replika ve redis bağlantıları hazır")
 
 	od := oturum.Yeni(b.Redis)
-	k := kontrolcu.Yeni(depo.Yeni(b.Yazma, b.Okuma, onbellek.Yeni(b.Redis)), od)
+	ob := onbellek.Yeni(b.Redis)
+	ob.EskiMenuleriTemizle(context.Background()) // Aşama 4: yapısı değişen menü kayıtları
+	k := kontrolcu.Yeni(depo.Yeni(b.Yazma, b.Okuma, ob), od)
 
 	sunucu := &http.Server{
 		Addr:              ":8000",

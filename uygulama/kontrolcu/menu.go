@@ -46,7 +46,8 @@ func (k *Kontrolcu) GununMenusu(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	menu, err := k.depo.GununMenusu(yemekhaneID, ogunID, tarih, ara.Kullanici(r).Rol)
+	kul := ara.Kullanici(r)
+	menu, err := k.depo.GununMenusu(yemekhaneID, ogunID, tarih, kul.KullaniciID, kul.Rol)
 	if errors.Is(err, depo.ErrBulunamadi) {
 		Hata(w, http.StatusNotFound, "Bu öğün için menü yok.")
 		return

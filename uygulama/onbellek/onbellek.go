@@ -7,6 +7,10 @@
 // veritabanına gitmek yerine ilk istekten sonra Redis'ten verilir. Yönetici
 // menüyü değiştirdiğinde anahtar silinir (depo.MenuKaydet).
 //
+// Aşama 4'te kaydedilen yapı değişti (yarım porsiyon oranı, alerjen id'leri).
+// Her kayıtta "surum" alanı tutulur; uygulama açılırken sürümü eski olan
+// menü kayıtları silinir (EskiMenuleriTemizle).
+//
 // Redis'e ulaşılamazsa uygulama durmaz: hata günlüğe yazılır ve veri
 // veritabanından okunmaya devam eder.
 package onbellek
@@ -21,6 +25,12 @@ import (
 
 	"github.com/redis/go-redis/v9"
 )
+
+// MenuSurumu, önbellekteki menü kaydının yapı sürümü.
+//
+//	1 (sürüm alanı yok): Aşama 3 yapısı
+//	2: Aşama 4, yarım porsiyon oranı ve yemeklerin alerjen id'leri eklendi
+const MenuSurumu = 2
 
 type Onbellek struct{ rdb *redis.Client }
 
@@ -78,4 +88,34 @@ func (o *Onbellek) Sil(ctx context.Context, anahtarlar ...string) {
 		return
 	}
 	log.Printf("önbellek: %v geçersiz kılındı (%d anahtar silindi)", anahtarlar, n)
+}
+
+// EskiMenuleriTemizle menu:* anahtarlarını tarar ve sürümü MenuSurumu'ndan
+// farklı olanları siler. KEYS yerine SCAN kullanılır; Redis'i kilitlemez.
+func (o *Onbellek) EskiMenuleriTemizle(ctx context.Context) {
+	var silinen, taranan int
+	iter := o.rdb.Scan(ctx, 0, "menu:*", 100).Iterator()
+	for iter.Next(ctx) {
+		anahtar := iter.Val()
+		taranan++
+		var kayit struct {
+			Surum int `json:"surum"`
+		}
+		veri, err := o.rdb.Get(ctx, anahtar).Bytes()
+		if err != nil {
+			continue // bu arada süresi dolmuş olabilir
+		}
+		if json.Unmarshal(veri, &kayit) == nil && kayit.Surum == MenuSurumu {
+			continue
+		}
+		if o.rdb.Del(ctx, anahtar).Err() == nil {
+			silinen++
+			log.Printf("önbellek: eski yapıdaki %s silindi (sürüm %d)", anahtar, kayit.Surum)
+		}
+	}
+	if err := iter.Err(); err != nil {
+		log.Printf("önbellek: eski menü kayıtları taranamadı: %v", err)
+		return
+	}
+	log.Printf("önbellek: %d menü kaydı tarandı, eski yapıdaki %d kayıt silindi (güncel sürüm %d)", taranan, silinen, MenuSurumu)
 }

@@ -41,6 +41,9 @@ func rotalar(k *kontrolcu.Kontrolcu, od *oturum.Depo) http.Handler {
 	kul.HandleFunc("/bakiye/yukle", k.BakiyeYukle).Methods(http.MethodPost)
 	kul.HandleFunc("/degerlendirmeler", k.Degerlendirmeler).Methods(http.MethodGet)
 	kul.HandleFunc("/degerlendirmeler", k.DegerlendirmeYap).Methods(http.MethodPost)
+	kul.HandleFunc("/alerjenler", k.Alerjenler).Methods(http.MethodGet)
+	kul.HandleFunc("/profil/alerjenler", k.ProfilAlerjenleri).Methods(http.MethodGet)
+	kul.HandleFunc("/profil/alerjenler", k.ProfilAlerjenleriKaydet).Methods(http.MethodPut)
 
 	// --- Yalnızca yönetici
 	yon := api.PathPrefix("/yonetici").Subrouter()
