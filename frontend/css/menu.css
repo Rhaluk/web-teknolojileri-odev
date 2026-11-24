@@ -45,3 +45,14 @@
     #weekly-menu-table .dugme { width: 100%; }
     #weekly-menu-table tbody tr:hover { background: var(--yuzey); color: inherit; }
 }
+
+/* Hafta gezintisi: ‹ önceki · 23–29 Kasım · sonraki › */
+#hafta-gezinti {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+#hafta-gezinti .dugme { white-space: nowrap; }
+#hafta-araligi { font-weight: 600; font-size: 0.875rem; text-align: center; }

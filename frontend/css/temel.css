@@ -207,6 +207,14 @@ label { display: block; margin-bottom: 0.25rem; font-weight: 600; }
 }
 .dugme-tehlike:hover { background: var(--hata-zemin); }
 
+/* İkincil düğme: geri/ileri, vazgeç gibi daha az önemli işler */
+.dugme-ikincil {
+    background: transparent;
+    border: 1px solid var(--cizgi);
+    color: var(--metin);
+}
+.dugme-ikincil:hover { background: var(--yuzey-ust); }
+
 /* Rezervasyon son saati geçtiğinde */
 .dugme:disabled {
   background: var(--pasif-zemin);
