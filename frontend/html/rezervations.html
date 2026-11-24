@@ -22,33 +22,92 @@
 
     </nav>
 </header>
-
     <div id="rezervations" class="centered">
+        <!-- İptal sonucu ya da procedure hatası buraya yazılır
+             (ör. "Bu rezervasyon için iptal süresi doldu.") -->
+        <p id="iptal-mesaj" class="bildirim bildirim-basari" role="status" hidden></p>
+
         <div>
-            <h3>aktif rezarvasyonlarınız</h3>
+            <h3>aktif rezervasyonlarınız</h3>
+            <!-- Son saat geçmediyse iptal edilebilir; geçtiyse düğme pasif -->
             <ul>
-                <li> gün: öğün: kcal: fiyat: <button>rezervasyon iptal</button></li>
-                <li> gün: öğün: kcal: fiyat: <button>rezervasyon iptal</button></li>
-                <li> gün: öğün: kcal: fiyat:<button>rezervasyon iptal</button></li>
+                <li>
+                    <span class="tarih">Cuma 20 Kasım · Akşam</span>
+                    <span class="yer">Mühendislik Yemekhanesi</span>
+                    <span class="fiyat">40,00 TL</span>
+                    <span class="rozet rozet-aktif">aktif</span>
+                    <button data-rezervasyon-id="363">rezervasyon iptal</button>
+                </li>
+                <li>
+                    <span class="tarih">Çarşamba 18 Kasım · Akşam</span>
+                    <span class="yer">Merkez Yemekhane</span>
+                    <span class="fiyat">40,00 TL</span>
+                    <span class="rozet rozet-aktif">aktif</span>
+                    <button data-rezervasyon-id="299">rezervasyon iptal</button>
+                </li>
+                <li>
+                    <span class="tarih">Salı 17 Kasım · Öğle</span>
+                    <span class="yer">Merkez Yemekhane</span>
+                    <span class="fiyat">40,00 TL</span>
+                    <span class="rozet rozet-aktif">aktif</span>
+                    <button data-rezervasyon-id="271">rezervasyon iptal</button>
+                </li>
+                <li>
+                    <span class="tarih">Pazartesi 16 Kasım · Akşam</span>
+                    <span class="yer">Mühendislik Yemekhanesi</span>
+                    <span class="fiyat">40,00 TL</span>
+                    <span class="rozet rozet-aktif">aktif</span>
+                    <button data-rezervasyon-id="264">rezervasyon iptal</button>
+                </li>
+                <li>
+                    <span class="tarih">Pazar 15 Kasım · Akşam</span>
+                    <span class="yer">Mühendislik Yemekhanesi</span>
+                    <span class="fiyat">40,00 TL</span>
+                    <span class="rozet rozet-aktif">aktif</span>
+                    <button disabled>iptal süresi doldu</button>
+                </li>
             </ul>
 
         </div>
-        <br>
+
         <h3>geçmiş rezervasyonlarınız</h3>
 
         <div>
+            <!-- Kullanılmış menü puanlanabilir; iptal edilenin işlemi yok -->
             <ul>
-                <li> gün: öğün: kcal: fiyat: <button>puanla</button></li>
-                <li> gün: öğün: kcal: fiyat:<button>puanla</button></li>
-                <li> gün: öğün: kcal: fiyat:<button>puanla</button></li>
+                <li>
+                    <span class="tarih">Perşembe 12 Kasım · Öğle</span>
+                    <span class="yer">Merkez Yemekhane</span>
+                    <span class="fiyat">40,00 TL</span>
+                    <span class="rozet rozet-kullanildi">kullanıldı</span>
+                    <a class="dugme" href="rate.html">puanla</a>
+                </li>
+                <li>
+                    <span class="tarih">Çarşamba 11 Kasım · Öğle</span>
+                    <span class="yer">Mühendislik Yemekhanesi</span>
+                    <span class="fiyat">40,00 TL</span>
+                    <span class="rozet rozet-iptal">iptal</span>
+                    <span class="soluk">ücret iade edildi</span>
+                </li>
+                <li>
+                    <span class="tarih">Pazar 8 Kasım · Kahvaltı</span>
+                    <span class="yer">Merkez Yemekhane</span>
+                    <span class="fiyat">25,00 TL</span>
+                    <span class="rozet rozet-kullanildi">kullanıldı</span>
+                    <a class="dugme" href="rate.html">puanla</a>
+                </li>
+                <li>
+                    <span class="tarih">Cumartesi 7 Kasım · Öğle</span>
+                    <span class="yer">Mühendislik Yemekhanesi</span>
+                    <span class="fiyat">40,00 TL</span>
+                    <span class="rozet rozet-kullanildi">kullanıldı</span>
+                    <a class="dugme" href="rate.html">puanla</a>
+                </li>
             </ul>
         </div>
 
-        <br>
-
-        <button>
-            <span><a href="booking.html">rezervasyon yap</a></span>
-        </button>
+        <!-- button içinde a olamaz; bağlantı düğme gibi görünen bir a oldu -->
+        <a class="dugme" id="rezervasyon-yap" href="menu.html">rezervasyon yap</a>
 
     </div>
 </body>

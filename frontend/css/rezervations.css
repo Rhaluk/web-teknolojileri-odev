@@ -29,3 +29,47 @@
     font-size: 1rem;
 }
 
+
+
+/* Her rezervasyon bir satır: tarih, yer, ücret ve durum; altında işlem */
+#rezervations li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 0.2rem 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--cizgi);
+}
+#rezervations li .tarih { font-weight: 600; font-size: 0.9rem; }
+#rezervations li .yer   { grid-column: 1; color: var(--metin-soluk); }
+#rezervations li .fiyat { grid-column: 2; grid-row: 1; text-align: right; }
+#rezervations li .rozet { grid-column: 2; grid-row: 2; justify-self: end; align-self: center; }
+#rezervations li button,
+#rezervations li .dugme,
+#rezervations li .soluk { grid-column: 1 / -1; }
+
+/* Düğmeler yukarıdaki sarı düğme stiliyle aynı görünsün */
+#rezervations button,
+#rezervations .dugme {
+    min-height: 44px;
+    border: 0;
+    border-radius: var(--kose);
+    color: var(--zemin);
+    font-weight: 600;
+    cursor: pointer;
+}
+#rezervations .dugme { background-color: var(--odak); width: 100%; margin-top: 0.5rem; }
+
+/* İptal süresi geçtiyse düğme pasif görünür */
+#rezervations button:disabled {
+    background-color: var(--pasif-zemin);
+    color: var(--pasif-metin);
+    cursor: not-allowed;
+}
+
+#rezervations h3 { margin-top: 2rem; }
+
+/* Telefonda kenar boşlukları daralır */
+@media (max-width: 40rem) {
+    #rezervations { padding: 1rem; }
+    #rezervations ul { margin-left: 0; }
+}
