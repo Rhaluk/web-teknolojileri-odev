@@ -8,10 +8,11 @@
 
 /* Geniş ekranda yemekhane ve öğün seçimi yan yana */
 @media (min-width: 40rem) {
-    #menu-secim { grid-template-columns: 1fr 1fr; align-items: end; }
+    #menu-secim { grid-template-columns: repeat(3, 1fr); align-items: end; }
 }
 
-#menu-secim select {
+#menu-secim select,
+#menu-secim input[type="date"] {
     width: 100%;
     min-height: 44px;
     padding: 0.5rem;

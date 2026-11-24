@@ -23,16 +23,19 @@
 </header>
 
 <main class="centered">
-    <h1 class="small-header">Günün menüsü · 18 Kasım 2026, Çarşamba</h1>
+    <h1 class="small-header" id="sayfa-baslik">Günün menüsü</h1>
 
-    <!-- Yemekhane ve öğün seçimi. Değişince menü API'den yeniden istenir. -->
+    <!-- Yemekhane, tarih ve öğün seçimi. Değişince menü API'den yeniden istenir. -->
     <form id="menu-secim">
         <div class="alan">
             <label for="yemekhane">Yemekhane</label>
-            <select id="yemekhane" name="yemekhane_id">
-                <option value="1" selected>Merkez Yemekhane</option>
-                <option value="2">Mühendislik Yemekhanesi</option>
-            </select>
+            <!-- seçenekler /api/yemekhaneler'den doldurulur -->
+            <select id="yemekhane" name="yemekhane_id"></select>
+        </div>
+
+        <div class="alan">
+            <label for="tarih">Tarih</label>
+            <input type="date" id="tarih" name="tarih">
         </div>
 
         <fieldset class="alan">
@@ -52,51 +55,11 @@
     <p id="menu-hata" class="bildirim bildirim-hata" role="alert" hidden></p>
 
     <!-- Yemekler kategori sırasıyla gelir (v_menu_detay: ORDER BY kategori_sira, yemek) -->
-    <section id="gunun-menusu">
-        <ul id="yemek-listesi">
-            <li>
-                <span class="kategori">Çorba</span>
-                <span class="yemek">Şehriyeli Tavuk Çorbası</span>
-                <span class="kalori">150 kcal</span>
-                <span class="etiketler">
-                    <span class="rozet">Gluten</span>
-                    <span class="rozet">Kereviz</span>
-                </span>
-            </li>
-            <li>
-                <span class="kategori">Ana Yemek</span>
-                <span class="yemek">Tavuk Şiş</span>
-                <span class="kalori">370 kcal</span>
-                <span class="etiketler">
-                    <span class="rozet">Soya</span>
-                </span>
-            </li>
-            <li>
-                <span class="kategori">Yardımcı Yemek</span>
-                <span class="yemek">Su Böreği</span>
-                <span class="kalori">400 kcal</span>
-                <span class="etiketler">
-                    <span class="rozet rozet-vejetaryen">vejetaryen</span>
-                    <span class="rozet">Gluten</span>
-                    <span class="rozet">Süt</span>
-                    <span class="rozet">Yumurta</span>
-                </span>
-            </li>
-            <li>
-                <span class="kategori">Tatlı ve Meyve</span>
-                <span class="yemek">Kemalpaşa Tatlısı</span>
-                <span class="kalori">320 kcal</span>
-                <span class="etiketler">
-                    <span class="rozet rozet-vejetaryen">vejetaryen</span>
-                    <span class="rozet">Gluten</span>
-                    <span class="rozet">Süt</span>
-                    <span class="rozet">Yumurta</span>
-                </span>
-            </li>
-        </ul>
+    <section id="gunun-menusu" hidden>
+        <ul id="yemek-listesi"></ul>
 
         <div id="menu-ozet">
-            <p>Toplam <strong>1240 kcal</strong></p>
+            <p>Toplam <strong id="toplam-kalori"></strong> · <span id="fiyat" class="fiyat"></span> · <span id="bos-yer"></span> boş yer</p>
             <a class="dugme" href="menu.html">rezervasyon yap</a>
         </div>
     </section>
@@ -104,5 +67,6 @@
     <!-- Seçilen yemekhane ve öğün için menü yoksa liste yerine bu gösterilir -->
     <p id="menu-yok" class="soluk" hidden>Bu öğün için menü yok.</p>
 </main>
+<script type="module" src="../js/index.js"></script>
 </body>
 </html>
