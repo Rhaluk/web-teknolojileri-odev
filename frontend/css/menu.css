@@ -1,0 +1,47 @@
+/* Haftanın menüsü sayfası
+   Tablonun temel stili temel.css'teki #weekly-menu-table kurallarındadır. */
+
+.small-centered-header {
+    font-size: 1.25rem;
+    text-align: center;
+}
+
+#yemekhane-secim {
+    max-width: 20rem;
+    margin-bottom: 1.5rem;
+}
+
+#yemekhane-secim select {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.5rem;
+    border: 1px solid var(--cizgi);
+    border-radius: var(--kose);
+    background: var(--yuzey-ust);
+    color: var(--metin);
+}
+
+/* Yemek adları uzun; sola dayalı ve biraz küçük olsun */
+#weekly-menu-table .yemekler {
+    text-align: left;
+    font-size: 0.875rem;
+}
+
+#weekly-menu-table .dugme,
+#weekly-menu-table .fiyat { white-space: nowrap; }
+
+/* Satır safran olunca fiyat da safran kalıp kayboluyordu */
+#weekly-menu-table tbody tr:hover .fiyat { color: inherit; }
+
+/* Telefonda her menü bir kart olur (temel.css .tablo-kart).
+   Buradaki id seçicileri, temel.css'teki #weekly-menu-table kenarlık ve
+   ortalama kurallarını kart görünümünde geçersiz kılar. */
+@media (max-width: 40rem) {
+    #weekly-menu-table { text-align: left; }
+    #weekly-menu-table th,
+    #weekly-menu-table td { border: 0; padding: 0.4rem 0; }
+    #weekly-menu-table tr { border: 1px solid var(--cizgi); }
+    #weekly-menu-table .yemekler { flex-direction: column; gap: 0.25rem; }
+    #weekly-menu-table .dugme { width: 100%; }
+    #weekly-menu-table tbody tr:hover { background: var(--yuzey); color: inherit; }
+}

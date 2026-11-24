@@ -6,6 +6,7 @@
     <title>Haftanın Menüsü · Yemekhane</title>
 
     <link rel="stylesheet" href="../css/temel.css">
+    <link rel="stylesheet" href="../css/menu.css">
 </head>
 <body>
 <header>
@@ -25,11 +26,26 @@
 
 <main class="centered">
     <h1 class="small-centered-header">Haftanın menüsü</h1>
-    <table id="weekly-menu-table">
+
+    <form id="yemekhane-secim">
+        <label for="yemekhane">Yemekhane</label>
+        <select id="yemekhane" name="yemekhane_id">
+            <option value="1" selected>Merkez Yemekhane</option>
+            <option value="2">Mühendislik Yemekhanesi</option>
+        </select>
+    </form>
+
+    <!-- Rezervasyon sonucu ya da procedure hatası buraya yazılır
+         (ör. "Bakiye yetersiz.", "Yemekhane kapasitesi dolu.") -->
+    <p id="rezervasyon-mesaj" class="bildirim bildirim-hata" role="alert" hidden></p>
+
+    <!-- Fiyat kullanıcının rolüne göre API'den gelir; son saat geçtiyse düğme pasif -->
+    <table id="weekly-menu-table" class="tablo-kart">
         <thead>
         <tr>
             <th>Gün</th>
             <th>Öğün</th>
+            <th>Yemekler</th>
             <th>Kcal</th>
             <th>Fiyat</th>
             <th>boş yer sayısı</th>
@@ -38,78 +54,174 @@
         </thead>
         <tbody>
         <tr>
-            <td>1</td>
-            <td>2</td>
-            <td>3</td>
-            <td>4</td>
-            <td>5</td>
+            <td data-baslik="Gün">Pazartesi 16 Kasım</td>
+            <td data-baslik="Öğün">Kahvaltı</td>
+            <td data-baslik="Yemekler" class="yemekler">Bal ve Tereyağı, Kaşar Peyniri, Simit, Siyah Zeytin, Çay</td>
+            <td data-baslik="Kcal">602</td>
+            <td data-baslik="Fiyat" class="fiyat">25,00 TL</td>
+            <td data-baslik="Boş yer">399</td>
             <td>
-                <button>rezervasyon yap</button>
+                <button class="dugme" disabled>süre doldu</button>
             </td>
         </tr>
         <tr>
-            <td>5</td>
-            <td>6</td>
-            <td>7</td>
-            <td>8</td>
+            <td data-baslik="Gün">Pazartesi 16 Kasım</td>
+            <td data-baslik="Öğün">Öğle</td>
+            <td data-baslik="Yemekler" class="yemekler">Mercimek Çorbası, Tavuk Şiş, Patates Püresi, Fıstıklı Baklava</td>
+            <td data-baslik="Kcal">1200</td>
+            <td data-baslik="Fiyat" class="fiyat">40,00 TL</td>
+            <td data-baslik="Boş yer">394</td>
             <td>
-                <button>rezervasyon yap</button>
+                <button class="dugme" data-menu-id="56">rezervasyon yap</button>
             </td>
         </tr>
         <tr>
-            <td>9</td>
-            <td>10</td>
-            <td>11</td>
-            <td>12</td>
-            <td>13</td>
-
+            <td data-baslik="Gün">Pazartesi 16 Kasım</td>
+            <td data-baslik="Öğün">Akşam</td>
+            <td data-baslik="Yemekler" class="yemekler">Domates Çorbası, Tavuk Şiş, Bulgur Pilavı, Haydari, Ayran</td>
+            <td data-baslik="Kcal">1030</td>
+            <td data-baslik="Fiyat" class="fiyat">40,00 TL</td>
+            <td data-baslik="Boş yer">398</td>
             <td>
-                <button>rezervasyon yap</button>
+                <button class="dugme" data-menu-id="57">rezervasyon yap</button>
             </td>
         </tr>
         <tr>
-            <td>13</td>
-            <td>14</td>
-            <td>15</td>
-            <td>16</td>
-            <td>17</td>
+            <td data-baslik="Gün">Salı 17 Kasım</td>
+            <td data-baslik="Öğün">Kahvaltı</td>
+            <td data-baslik="Yemekler" class="yemekler">Beyaz Peynir, Menemen, Simit, Siyah Zeytin, Çay</td>
+            <td data-baslik="Kcal">662</td>
+            <td data-baslik="Fiyat" class="fiyat">25,00 TL</td>
+            <td data-baslik="Boş yer">398</td>
             <td>
-                <button>rezervasyon yap</button>
+                <button class="dugme" data-menu-id="61">rezervasyon yap</button>
             </td>
         </tr>
         <tr>
-            <td>17</td>
-            <td>18</td>
-            <td>19</td>
-            <td>20</td>
-            <td>21</td>
+            <td data-baslik="Gün">Salı 17 Kasım</td>
+            <td data-baslik="Öğün">Öğle</td>
+            <td data-baslik="Yemekler" class="yemekler">Tarhana Çorbası, Izgara Köfte, Pirinç Pilavı, Aşure</td>
+            <td data-baslik="Kcal">1240</td>
+            <td data-baslik="Fiyat" class="fiyat">40,00 TL</td>
+            <td data-baslik="Boş yer">394</td>
             <td>
-                <button>rezervasyon yap</button>
+                <span class="rozet rozet-aktif">rezervasyonun var</span>
             </td>
         </tr>
         <tr>
-            <td>21</td>
-            <td>22</td>
-            <td>23</td>
-            <td>24</td>
-            <td>25</td>
+            <td data-baslik="Gün">Salı 17 Kasım</td>
+            <td data-baslik="Öğün">Akşam</td>
+            <td data-baslik="Yemekler" class="yemekler">Şehriyeli Tavuk Çorbası, Etli Nohut, Şehriyeli Pilav, Çoban Salata, Meyve Suyu</td>
+            <td data-baslik="Kcal">1100</td>
+            <td data-baslik="Fiyat" class="fiyat">40,00 TL</td>
+            <td data-baslik="Boş yer">398</td>
             <td>
-                <button>rezervasyon yap</button>
+                <button class="dugme" data-menu-id="63">rezervasyon yap</button>
             </td>
         </tr>
         <tr>
-            <td>25</td>
-            <td>26</td>
-            <td>27</td>
-            <td>28</td>
-            <td>29</td>
+            <td data-baslik="Gün">Çarşamba 18 Kasım</td>
+            <td data-baslik="Öğün">Kahvaltı</td>
+            <td data-baslik="Yemekler" class="yemekler">Bal ve Tereyağı, Beyaz Peynir, Haşlanmış Yumurta, Siyah Zeytin, Çay</td>
+            <td data-baslik="Kcal">392</td>
+            <td data-baslik="Fiyat" class="fiyat">25,00 TL</td>
+            <td data-baslik="Boş yer">397</td>
             <td>
-                <button>rezervasyon yap</button>
+                <button class="dugme" data-menu-id="67">rezervasyon yap</button>
+            </td>
+        </tr>
+        <tr>
+            <td data-baslik="Gün">Çarşamba 18 Kasım</td>
+            <td data-baslik="Öğün">Öğle</td>
+            <td data-baslik="Yemekler" class="yemekler">Şehriyeli Tavuk Çorbası, Tavuk Şiş, Su Böreği, Kemalpaşa Tatlısı</td>
+            <td data-baslik="Kcal">1240</td>
+            <td data-baslik="Fiyat" class="fiyat">40,00 TL</td>
+            <td data-baslik="Boş yer">394</td>
+            <td>
+                <button class="dugme" data-menu-id="68">rezervasyon yap</button>
+            </td>
+        </tr>
+        <tr>
+            <td data-baslik="Gün">Çarşamba 18 Kasım</td>
+            <td data-baslik="Öğün">Akşam</td>
+            <td data-baslik="Yemekler" class="yemekler">Domates Çorbası, Karnıyarık, Domates Soslu Makarna, Haydari</td>
+            <td data-baslik="Kcal">1040</td>
+            <td data-baslik="Fiyat" class="fiyat">40,00 TL</td>
+            <td data-baslik="Boş yer">396</td>
+            <td>
+                <span class="rozet rozet-aktif">rezervasyonun var</span>
+            </td>
+        </tr>
+        <tr>
+            <td data-baslik="Gün">Perşembe 19 Kasım</td>
+            <td data-baslik="Öğün">Kahvaltı</td>
+            <td data-baslik="Yemekler" class="yemekler">Bal ve Tereyağı, Beyaz Peynir, Haşlanmış Yumurta, Kaşar Peyniri, Çay</td>
+            <td data-baslik="Kcal">442</td>
+            <td data-baslik="Fiyat" class="fiyat">25,00 TL</td>
+            <td data-baslik="Boş yer">397</td>
+            <td>
+                <button class="dugme" data-menu-id="73">rezervasyon yap</button>
+            </td>
+        </tr>
+        <tr>
+            <td data-baslik="Gün">Perşembe 19 Kasım</td>
+            <td data-baslik="Öğün">Öğle</td>
+            <td data-baslik="Yemekler" class="yemekler">Yayla Çorbası, Tavuk Şiş, Fırın Makarna, Revani</td>
+            <td data-baslik="Kcal">1310</td>
+            <td data-baslik="Fiyat" class="fiyat">40,00 TL</td>
+            <td data-baslik="Boş yer">396</td>
+            <td>
+                <button class="dugme" data-menu-id="74">rezervasyon yap</button>
+            </td>
+        </tr>
+        <tr>
+            <td data-baslik="Gün">Perşembe 19 Kasım</td>
+            <td data-baslik="Öğün">Akşam</td>
+            <td data-baslik="Yemekler" class="yemekler">Tarhana Çorbası, Fırında Levrek, Bulgur Pilavı, Piyaz</td>
+            <td data-baslik="Kcal">1010</td>
+            <td data-baslik="Fiyat" class="fiyat">40,00 TL</td>
+            <td data-baslik="Boş yer">398</td>
+            <td>
+                <button class="dugme" data-menu-id="75">rezervasyon yap</button>
+            </td>
+        </tr>
+        <tr>
+            <td data-baslik="Gün">Cuma 20 Kasım</td>
+            <td data-baslik="Öğün">Kahvaltı</td>
+            <td data-baslik="Yemekler" class="yemekler">Bal ve Tereyağı, Beyaz Peynir, Kaşar Peyniri, Siyah Zeytin, Çay</td>
+            <td data-baslik="Kcal">422</td>
+            <td data-baslik="Fiyat" class="fiyat">25,00 TL</td>
+            <td data-baslik="Boş yer">399</td>
+            <td>
+                <button class="dugme" data-menu-id="79">rezervasyon yap</button>
+            </td>
+        </tr>
+        <tr>
+            <td data-baslik="Gün">Cuma 20 Kasım</td>
+            <td data-baslik="Öğün">Öğle</td>
+            <td data-baslik="Yemekler" class="yemekler">Mercimek Çorbası, Izgara Köfte, Su Böreği, Mevsim Salata, Ayran</td>
+            <td data-baslik="Kcal">1180</td>
+            <td data-baslik="Fiyat" class="fiyat">40,00 TL</td>
+            <td data-baslik="Boş yer">395</td>
+            <td>
+                <button class="dugme" data-menu-id="80">rezervasyon yap</button>
+            </td>
+        </tr>
+        <tr>
+            <td data-baslik="Gün">Cuma 20 Kasım</td>
+            <td data-baslik="Öğün">Akşam</td>
+            <td data-baslik="Yemekler" class="yemekler">Mercimek Çorbası, Karnıyarık, Bulgur Pilavı, Mevsim Salata</td>
+            <td data-baslik="Kcal">950</td>
+            <td data-baslik="Fiyat" class="fiyat">40,00 TL</td>
+            <td data-baslik="Boş yer">397</td>
+            <td>
+                <button class="dugme" data-menu-id="81">rezervasyon yap</button>
             </td>
         </tr>
         </tbody>
     </table>
 
+    <p class="soluk">Cumartesi ve pazar günleri için menü yok.</p>
 </main>
 </body>
 </html>

@@ -144,11 +144,12 @@ nav ul a:hover{
    bütün tablolara uygulanır; bu yüzden td de tabloya bağlandı. */
 #weekly-menu-table th, #weekly-menu-table td {
     border: 1px solid var(--metin);
-    padding: 1.5rem 1.75rem;
+    padding: 0.75rem 1rem;   /* 7 sütun ekrana sığsın diye 1.5rem 1.75rem'den küçültüldü */
 }
 
 #weekly-menu-table tbody tr:hover {
   background-color: var(--vurgu);
+  color: var(--zemin);     /* safran zeminde açık renk yazı okunmuyordu */
   transition: background-color 0.2s ease;
 }
 
@@ -157,7 +158,9 @@ nav ul a:hover{
    ===================================================================== */
 
 /* ---------- Üst menü ---------- */
-nav { width: 100%; }
+/* min-width: 0 olmadan flex içindeki nav, bağlantıların toplam genişliği kadar
+   büyüyüp telefonda bütün sayfayı yana taşırıyordu. */
+nav { width: 100%; min-width: 0; }
 
 nav ul {
   margin: 0;
