@@ -1,0 +1,10 @@
+#rate-table{
+
+}
+
+#stars-div{
+    mask-image: url('../images/star-rounded.svg');
+    width: 7.5rem;
+    height: 1.5rem;
+    background-color: white;
+}
