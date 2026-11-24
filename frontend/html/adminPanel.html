@@ -1,10 +1,350 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Yönetici Paneli · Yemekhane</title>
+    <link rel="stylesheet" href="../css/temel.css">
+    <!-- ortalama puan yıldızları puan sayfasındaki .stars-div ile çizilir -->
+    <link rel="stylesheet" href="../css/rate.css">
+    <link rel="stylesheet" href="../css/adminPanel.css">
 </head>
 <body>
+<header>
+    <nav>
+        <ul>
+            <li><a href="index.html">günün menüsü</a></li>
+            <li><a href="menu.html">haftanın menüsü</a></li>
+            <li><a href="rezervations.html">rezervasyonlarım</a></li>
+            <li><a href="credit.html">bakiye</a></li>
+            <li><a href="rate.html">puan verin</a></li>
+            <li><a href="adminPanel.html" aria-current="page">yönetici</a></li>
+            <li><a href="login.html" id="cikis">çıkış</a></li>
+        </ul>
+    </nav>
+</header>
 
+<main class="centered" id="yonetici">
+    <h1 class="small-header">Yönetici paneli</h1>
+
+    <!-- ===== Menü oluşturma ve düzenleme ===== -->
+    <section id="menu-duzenle">
+        <h2>menü düzenle <span class="soluk">#65</span></h2>
+        <p class="soluk">Yeni menü için formu boş bırakıp kaydet; düzenlemek için aşağıdaki listeden "düzenle"ye bas.</p>
+
+        <!-- Kayıt sonucu ya da hata buraya yazılır
+             (ör. "Bu yemekhane, tarih ve öğün için zaten bir menü var.") -->
+        <p id="menu-mesaj" class="bildirim bildirim-basari" role="status" hidden></p>
+
+        <form id="menu-formu">
+            <input type="hidden" name="menu_id" value="65">
+
+            <div class="alan-satiri">
+                <div class="alan">
+                    <label for="m-yemekhane">yemekhane</label>
+                    <select id="m-yemekhane" name="yemekhane_id" required>
+                        <option value="1">Merkez Yemekhane</option>
+                        <option value="2" selected>Mühendislik Yemekhanesi</option>
+                    </select>
+                </div>
+                <div class="alan">
+                    <label for="m-tarih">tarih</label>
+                    <input id="m-tarih" name="tarih" type="date" value="2026-11-17" required>
+                </div>
+                <div class="alan">
+                    <label for="m-ogun">öğün</label>
+                    <select id="m-ogun" name="ogun_id" required>
+                        <option value="1">Kahvaltı</option>
+                        <option value="2" selected>Öğle</option>
+                        <option value="3">Akşam</option>
+                    </select>
+                </div>
+                <div class="alan">
+                    <label for="m-ogr-fiyat">öğrenci fiyatı (TL)</label>
+                    <input id="m-ogr-fiyat" name="ogrenci_fiyati" type="number" min="0" step="0.01" value="40.00" required>
+                </div>
+                <div class="alan">
+                    <label for="m-per-fiyat">personel fiyatı (TL)</label>
+                    <input id="m-per-fiyat" name="personel_fiyati" type="number" min="0" step="0.01" value="90.00" required>
+                </div>
+            </div>
+
+            <h3>yemekler</h3>
+                <fieldset class="kategori-grubu">
+                    <legend>Çorba</legend>
+                    <div class="secim-kutulari">
+                        <label><input type="checkbox" name="yemek_id" value="5"> Domates Çorbası <span class="soluk">140</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="2" checked> Ezogelin Çorbası <span class="soluk">190</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="8"> İşkembe Çorbası <span class="soluk">210</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="1"> Mercimek Çorbası <span class="soluk">180</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="6"> Sebze Çorbası <span class="soluk">120</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="7"> Şehriyeli Tavuk Çorbası <span class="soluk">150</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="3"> Tarhana Çorbası <span class="soluk">160</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="4"> Yayla Çorbası <span class="soluk">170</span></label>
+                    </div>
+                </fieldset>
+                <fieldset class="kategori-grubu">
+                    <legend>Ana Yemek</legend>
+                    <div class="secim-kutulari">
+                        <label><input type="checkbox" name="yemek_id" value="9"> Etli Kuru Fasulye <span class="soluk">420</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="13"> Etli Nohut <span class="soluk">410</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="12"> Fırın Tavuk <span class="soluk">400</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="17"> Fırında Levrek <span class="soluk">350</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="11" checked> Izgara Köfte <span class="soluk">450</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="14"> Karnıyarık <span class="soluk">390</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="19"> Kayseri Mantısı <span class="soluk">480</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="16"> Mantar Sote <span class="soluk">210</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="18"> Sebzeli Güveç <span class="soluk">260</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="10"> Tavuk Sote <span class="soluk">380</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="20"> Tavuk Şiş <span class="soluk">370</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="15"> Zeytinyağlı Taze Fasulye <span class="soluk">220</span></label>
+                    </div>
+                </fieldset>
+                <fieldset class="kategori-grubu">
+                    <legend>Yardımcı Yemek</legend>
+                    <div class="secim-kutulari">
+                        <label><input type="checkbox" name="yemek_id" value="22"> Bulgur Pilavı <span class="soluk">300</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="24"> Domates Soslu Makarna <span class="soluk">360</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="25"> Fırın Makarna <span class="soluk">420</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="28"> Mercimek Köftesi <span class="soluk">250</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="27"> Patates Püresi <span class="soluk">220</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="21" checked> Pirinç Pilavı <span class="soluk">330</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="26"> Su Böreği <span class="soluk">400</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="23"> Şehriyeli Pilav <span class="soluk">340</span></label>
+                    </div>
+                </fieldset>
+                <fieldset class="kategori-grubu">
+                    <legend>Salata ve Meze</legend>
+                    <div class="secim-kutulari">
+                        <label><input type="checkbox" name="yemek_id" value="31"> Cacık <span class="soluk">110</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="29"> Çoban Salata <span class="soluk">90</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="32"> Haydari <span class="soluk">150</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="35"> Humus <span class="soluk">220</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="30"> Mevsim Salata <span class="soluk">80</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="34"> Piyaz <span class="soluk">200</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="33"> Rus Salatası <span class="soluk">250</span></label>
+                    </div>
+                </fieldset>
+                <fieldset class="kategori-grubu">
+                    <legend>Tatlı ve Meyve</legend>
+                    <div class="secim-kutulari">
+                        <label><input type="checkbox" name="yemek_id" value="40"> Aşure <span class="soluk">300</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="38"> Fıstıklı Baklava <span class="soluk">430</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="42" checked> İrmik Helvası <span class="soluk">330</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="37"> Kemalpaşa Tatlısı <span class="soluk">320</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="41"> Mevsim Meyvesi <span class="soluk">70</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="39"> Revani <span class="soluk">350</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="36"> Sütlaç <span class="soluk">280</span></label>
+                    </div>
+                </fieldset>
+                <fieldset class="kategori-grubu">
+                    <legend>Kahvaltılık</legend>
+                    <div class="secim-kutulari">
+                        <label><input type="checkbox" name="yemek_id" value="47"> Bal ve Tereyağı <span class="soluk">150</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="44"> Beyaz Peynir <span class="soluk">100</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="43"> Haşlanmış Yumurta <span class="soluk">80</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="45"> Kaşar Peyniri <span class="soluk">110</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="48"> Menemen <span class="soluk">220</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="49"> Simit <span class="soluk">280</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="46"> Siyah Zeytin <span class="soluk">60</span></label>
+                    </div>
+                </fieldset>
+                <fieldset class="kategori-grubu">
+                    <legend>İçecek</legend>
+                    <div class="secim-kutulari">
+                        <label><input type="checkbox" name="yemek_id" value="50"> Ayran <span class="soluk">70</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="51"> Çay <span class="soluk">2</span></label>
+                        <label><input type="checkbox" name="yemek_id" value="52"> Meyve Suyu <span class="soluk">110</span></label>
+                    </div>
+                </fieldset>
+
+            <div class="form-dugmeler">
+                <button type="submit" class="dugme">kaydet</button>
+                <button type="reset" class="dugme dugme-ikincil">temizle</button>
+            </div>
+        </form>
+    </section>
+
+    <!-- ===== Menü bazında doluluk ve ortalama puan (replikadan okunur) ===== -->
+    <section id="menu-rapor">
+        <h2>menü raporu</h2>
+
+        <form id="rapor-filtre">
+            <label for="r-tarih">tarih aralığı başlangıcı</label>
+            <input id="r-tarih" name="baslangic" type="date" value="2026-11-12">
+        </form>
+
+        <table class="tablo tablo-kart">
+            <thead>
+            <tr>
+                <th>tarih</th>
+                <th>yemekhane</th>
+                <th>öğün</th>
+                <th>doluluk</th>
+                <th>ortalama puan</th>
+                <th><span class="gorunmez">işlem</span></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td data-baslik="tarih">Sal 17.11</td>
+                <td data-baslik="yemekhane">Merkez</td>
+                <td data-baslik="öğün">Kahvaltı</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 0.5%"></span>
+                        <span>2 / 400 <span class="soluk">(%0,5)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="soluk">henüz oy yok</span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="61">düzenle</button></td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">Sal 17.11</td>
+                <td data-baslik="yemekhane">Merkez</td>
+                <td data-baslik="öğün">Öğle</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 1.5%"></span>
+                        <span>6 / 400 <span class="soluk">(%1,5)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="soluk">henüz oy yok</span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="62">düzenle</button></td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">Sal 17.11</td>
+                <td data-baslik="yemekhane">Merkez</td>
+                <td data-baslik="öğün">Akşam</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 0.5%"></span>
+                        <span>2 / 400 <span class="soluk">(%0,5)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="soluk">henüz oy yok</span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="63">düzenle</button></td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">Sal 17.11</td>
+                <td data-baslik="yemekhane">Mühendislik</td>
+                <td data-baslik="öğün">Kahvaltı</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 3.3%"></span>
+                        <span>2 / 60 <span class="soluk">(%3,3)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="soluk">henüz oy yok</span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="64">düzenle</button></td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">Sal 17.11</td>
+                <td data-baslik="yemekhane">Mühendislik</td>
+                <td data-baslik="öğün">Öğle</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 11.7%"></span>
+                        <span>7 / 60 <span class="soluk">(%11,7)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="soluk">henüz oy yok</span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="65">düzenle</button></td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">Sal 17.11</td>
+                <td data-baslik="yemekhane">Mühendislik</td>
+                <td data-baslik="öğün">Akşam</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 3.3%"></span>
+                        <span>2 / 60 <span class="soluk">(%3,3)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="soluk">henüz oy yok</span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="66">düzenle</button></td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">Per 12.11</td>
+                <td data-baslik="yemekhane">Merkez</td>
+                <td data-baslik="öğün">Kahvaltı</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 0.3%"></span>
+                        <span>1 / 400 <span class="soluk">(%0,3)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="soluk">henüz oy yok</span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="31">düzenle</button></td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">Per 12.11</td>
+                <td data-baslik="yemekhane">Merkez</td>
+                <td data-baslik="öğün">Öğle</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 2.0%"></span>
+                        <span>8 / 400 <span class="soluk">(%2,0)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="puan"><span class="stars-div kucuk" style="--puan: 3.17" role="img" aria-label="5 üzerinden 3,17"></span> 3,17 <span class="soluk">(6 oy)</span></span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="32">düzenle</button></td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">Per 12.11</td>
+                <td data-baslik="yemekhane">Merkez</td>
+                <td data-baslik="öğün">Akşam</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 0.8%"></span>
+                        <span>3 / 400 <span class="soluk">(%0,8)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="puan"><span class="stars-div kucuk" style="--puan: 5.00" role="img" aria-label="5 üzerinden 5,00"></span> 5,00 <span class="soluk">(1 oy)</span></span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="33">düzenle</button></td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">Per 12.11</td>
+                <td data-baslik="yemekhane">Mühendislik</td>
+                <td data-baslik="öğün">Kahvaltı</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 6.7%"></span>
+                        <span>4 / 60 <span class="soluk">(%6,7)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="puan"><span class="stars-div kucuk" style="--puan: 3.00" role="img" aria-label="5 üzerinden 3,00"></span> 3,00 <span class="soluk">(3 oy)</span></span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="34">düzenle</button></td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">Per 12.11</td>
+                <td data-baslik="yemekhane">Mühendislik</td>
+                <td data-baslik="öğün">Öğle</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 11.7%"></span>
+                        <span>7 / 60 <span class="soluk">(%11,7)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="puan"><span class="stars-div kucuk" style="--puan: 4.00" role="img" aria-label="5 üzerinden 4,00"></span> 4,00 <span class="soluk">(4 oy)</span></span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="35">düzenle</button></td>
+            </tr>
+            <tr>
+                <td data-baslik="tarih">Per 12.11</td>
+                <td data-baslik="yemekhane">Mühendislik</td>
+                <td data-baslik="öğün">Akşam</td>
+                <td data-baslik="doluluk">
+                    <span class="doluluk">
+                        <span class="doluluk-cubuk" style="--oran: 5.0%"></span>
+                        <span>3 / 60 <span class="soluk">(%5,0)</span></span>
+                    </span>
+                </td>
+                <td data-baslik="ortalama puan"><span class="puan"><span class="stars-div kucuk" style="--puan: 4.00" role="img" aria-label="5 üzerinden 4,00"></span> 4,00 <span class="soluk">(2 oy)</span></span></td>
+                <td><button type="button" class="dugme dugme-ikincil" data-menu-id="36">düzenle</button></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</main>
 </body>
 </html>

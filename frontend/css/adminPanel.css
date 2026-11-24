@@ -1,0 +1,97 @@
+/* Yönetici paneli */
+
+#yonetici section {
+    margin-bottom: 2.5rem;
+    padding: 1.25rem;
+    border: 1px solid var(--cizgi);
+    border-radius: var(--kose);
+    background: var(--yuzey);
+}
+#yonetici h2 { font-size: 1.1rem; }
+#yonetici h3 { margin: 1rem 0 0.5rem; font-size: 1rem; }
+
+/* Form alanları ortak görünüm */
+#yonetici input:not([type="checkbox"]),
+#yonetici select {
+    width: 100%;
+    min-height: 44px;
+    padding: 0.5rem;
+    border: 1px solid var(--cizgi);
+    border-radius: var(--kose);
+    background: var(--yuzey-ust);
+    color: var(--metin);
+}
+
+/* Yemekhane, tarih, öğün ve fiyatlar: geniş ekranda yan yana */
+.alan-satiri {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: 0 1rem;
+}
+
+/* Yemek seçimi: kategori başına bir grup, onay kutuları çip görünümünde */
+.kategori-grubu { margin: 0 0 1rem; padding: 0; border: 0; min-width: 0; }
+.kategori-grubu legend { padding: 0; margin-bottom: 0.4rem; color: var(--metin-soluk); font-size: 0.8rem; text-transform: uppercase; }
+
+.secim-kutulari { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.secim-kutulari label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.35rem 0.7rem;
+    border: 1px solid var(--cizgi);
+    border-radius: 999px;
+    font-weight: 400;
+    font-size: 0.875rem;
+    cursor: pointer;
+}
+.secim-kutulari input { accent-color: var(--ana); }
+.secim-kutulari label:has(input:checked) { border-color: var(--ana); background: var(--basari-zemin); }
+
+.form-dugmeler { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
+
+/* Kenarlıklı, zeminsiz ikinci derece düğme */
+.dugme-ikincil {
+    background: transparent;
+    border: 1px solid var(--cizgi);
+    color: var(--metin);
+}
+.dugme-ikincil:hover { background: var(--yuzey-ust); }
+
+#rapor-filtre { max-width: 16rem; margin-bottom: 1rem; }
+
+/* Doluluk çubuğu: genişlik style="--oran: 13.3%" ile verilir */
+.doluluk { display: flex; flex-direction: column; gap: 0.3rem; min-width: 7rem; }
+.doluluk-cubuk {
+    display: block;
+    height: 0.5rem;
+    border-radius: 999px;
+    background: var(--yuzey-ust);
+    overflow: hidden;
+}
+.doluluk-cubuk::before {
+    content: "";
+    display: block;
+    width: var(--oran, 0%);
+    min-width: 2px;
+    height: 100%;
+    background: var(--ana);
+}
+
+/* Ortalama puan: küçük yıldızlar (rate.css'teki .stars-div'in küçük hali) */
+.puan { display: inline-flex; align-items: center; gap: 0.4rem; white-space: nowrap; }
+.stars-div.kucuk {
+    width: 5rem;
+    height: 1rem;
+    -webkit-mask-size: 1rem;
+    mask-size: 1rem;
+    background: linear-gradient(to right,
+        var(--vurgu) calc(var(--puan, 0) * 1rem),
+        var(--cizgi) 0);
+}
+
+@media (max-width: 40rem) {
+    #yonetici section { padding: 1rem; }
+    .doluluk { align-items: flex-end; }
+}
