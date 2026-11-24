@@ -26,10 +26,10 @@
 </header>
 
 <div id="credit-container" class="centered">
-    <h3>merhaba Mehmet Yıldız</h3>
-    <!-- Rezervasyondan hemen sonra bu tutar kaynak veritabanından okunur
-         (replika birkaç saniye geride kalabilir) -->
-    <p>mevcut krediniz <strong id="bakiye" class="fiyat">355,00 TL</strong></p>
+    <h3 id="selam">merhaba</h3>
+    <!-- Sayfa açılışında replikadan okunur. Yüklemeden sonra ise
+         procedure'ün kaynaktan döndürdüğü bakiye yazılır. -->
+    <p>mevcut krediniz <strong id="bakiye" class="fiyat"></strong></p>
 
     <div>
         <h3> kredi yükle</h3>
@@ -73,41 +73,13 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td data-baslik="tarih">14.11.2026 07:40</td>
-                <td data-baslik="açıklama">Rezervasyon</td>
-                <td data-baslik="tutar" class="tutar-eksi">−40,00 TL</td>
-            </tr>
-            <tr>
-                <td data-baslik="tarih">14.11.2026 06:40</td>
-                <td data-baslik="açıklama">Rezervasyon</td>
-                <td data-baslik="tutar" class="tutar-eksi">−40,00 TL</td>
-            </tr>
-            <tr>
-                <td data-baslik="tarih">14.11.2026 02:40</td>
-                <td data-baslik="açıklama">Rezervasyon</td>
-                <td data-baslik="tutar" class="tutar-eksi">−40,00 TL</td>
-            </tr>
-            <tr>
-                <td data-baslik="tarih">13.11.2026 22:40</td>
-                <td data-baslik="açıklama">Rezervasyon</td>
-                <td data-baslik="tutar" class="tutar-eksi">−40,00 TL</td>
-            </tr>
-            <tr>
-                <td data-baslik="tarih">10.11.2026 20:30</td>
-                <td data-baslik="açıklama">Rezervasyon iptali</td>
-                <td data-baslik="tutar" class="tutar-arti">+40,00 TL</td>
-            </tr>
-            <tr>
-                <td data-baslik="tarih">04.11.2026 16:15</td>
-                <td data-baslik="açıklama">Bakiye yükleme</td>
-                <td data-baslik="tutar" class="tutar-arti">+750,00 TL</td>
-            </tr>
+            <!-- satırlar /api/bakiye'den doldurulur -->
             </tbody>
         </table>
     </div>
 
 
 </div>
+<script type="module" src="../js/credit.js"></script>
 </body>
 </html>
