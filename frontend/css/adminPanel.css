@@ -51,8 +51,8 @@
 
 .form-dugmeler { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1rem; }
 
-/* Kenarlıklı, zeminsiz ikinci derece düğme */
-#rapor-filtre { max-width: 16rem; margin-bottom: 1rem; }
+/* Rapor tarih aralığı: başlangıç ve bitiş yan yana */
+#rapor-filtre { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 24rem; margin-bottom: 1rem; }
 
 /* Doluluk çubuğu: genişlik style="--oran: 13.3%" ile verilir */
 .doluluk { display: flex; flex-direction: column; gap: 0.3rem; min-width: 7rem; }
